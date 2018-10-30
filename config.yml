@@ -32,15 +32,17 @@ before:
     name: Done
 steps:
   #1
-  - title: Create a release
-    description: Create a release for the most recent commit on the master branch.
+  - title: Create a beta release (pre-release)
+    description: Create a release from an existing codebase.
     event: release.published
     link: '{{ repoUrl }}/issues/1'
     actions:
       - type: createIssue
         title: Bug found, please fix
-        body: 01.1_bug-issue.md #edit to have instructions be: added to project board
+        body: 01.1_bug-issue.md # Change this from a bug issue to a tracking issue. This issue will include the steps in prepping for a release: (1) add this tracking issue the project board (2) create the release branch (3) create a PR for the release. Please add this card to the project board I've created.
         action_id: bugIssue
+    #  - TODO bot: create a release branch using the `release-*` convention
+    #  - TODO bot: set up branch protections using wildcards for branch name
       - type: respond
         issue: Welcome
         with: 01.2_next-step.md
@@ -51,14 +53,15 @@ steps:
         issue: Welcome
 
   #2
-  - title: Organize the release with a project board
+  - title: Prepare for the next release
     description: Add a card to the "in progress" column of the project board.
     event: project_card.created
     link: '{{ repoURL }}/projects/1'
     actions:
-      - type: respond
-        with: 02.1_fix-bug.md
+      - type: respond # TODO: replace this with new issue
+        with: 02.1_fix-bug.md # TODO: edit this response to note that it should be based on the release branch
         issue: 2
+      # TODO: add a response acknowledging the user's action, pointing to new bug issue
 
   #3
   - title: Fix the bug
@@ -66,11 +69,70 @@ steps:
     event: pull_request.opened
     link: '{{ repoUrl }}/issues/2'
     actions:
-      - type: createReview
-        body: 03.1_request-changes.md
-        event: REQUEST_CHANGES
+      # TODO: validate base branch
+      # TODO: explanation of the branch protections for the release branch
+      # TODO: bot approves
+
+      # TODO: remove the response file below
+      # - type: createReview
+      #   body: 03.1_request-changes.md
+      #   event: REQUEST_CHANGES
 
   #4
+  - title: Merge the pull request
+    description: Merge the pull request to update the release branch.
+    event: pull_request.closed
+    link: '{{ repoURL }}/pull/3'
+    actions:
+      - type: gate
+        left: '%payload.pull_request.merged%'
+        else:
+          - type: octokit
+            method: issues.edit
+            state: open
+            owner: '%payload.repository.owner.login%'
+            repo: '%payload.repository.name%'
+            number: '%payload.repository.pull_request.number%'
+          - type: respond
+            with: 06.1_early-close.md
+
+    #5 
+    - title: Prepare to merge your release into master
+      description: # TODO
+      event: pull_request.opened
+      link: # TODO
+      actions:
+        # TODO: add a gate to check the proper base, proper branch being PRed
+        # TODO: create 1+ PRs (and project cards, etc) of other work that will go into the release branch, 
+
+    #6 
+    - title: Review other work for this release
+      description: #TODO
+      event: pull_request_review.submitted
+      actions:
+        # TODO: merge approved PRs
+        # TODO: create an issue for the probot app
+        # TODO: comment pointing to issue ^
+
+    #7
+    - title: Install the probot app that automates the release or changelog
+      description: #TODO
+      event: #TODO
+      actions: 
+        # TODO: approve release PR, ask user to install app
+        # TODO: comment and close this issue, point to release PR
+
+    #8
+    - title: Merge the release PR
+      description: #TODO
+      event: pull_request.closed
+      actions:
+        # Probot app creates a draft release
+        # TODO: open a new issue with instructions for finalizing the release
+        # TODO: comment in PR opointing to new issue
+
+#--------- from here on it's legacy content ------------
+
   - title: Create a release branch
     description: Create a release branch that will represent work for a specific release.
     event: create
