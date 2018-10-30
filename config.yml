@@ -119,6 +119,7 @@ steps:
         with: 06.3_nice-merge.md
         data:
           url: '%actions.releasePR.data.html_url%'
+          project: '{{ repoURL }}/projects/1'
       - type: closeIssue
         issue: 2
         # update project board
