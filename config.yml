@@ -48,7 +48,7 @@ steps:
           releases: '{{ repoURl }}/releases'
       - type: closeIssue
         issue: Welcome
-        
+
   #2
   - title: Organize the release with a project board
     description: Add a card to the "in progress" column of the project board.
@@ -57,6 +57,7 @@ steps:
     actions:
       - type: respond
         with: 02.1_fix-bug.md
+        issue: 2
 
   #3
   - title: Fix the bug
