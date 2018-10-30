@@ -100,6 +100,7 @@ steps:
     event: project_card.created
     link: '{{ repoURL }}/projects/1'
     actions:
+      - type: updateBranchProtection
       - type: createPullRequest
         title: Merge the release branch into master
         body: 06.2_bot-pr.md
