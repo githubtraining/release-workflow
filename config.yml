@@ -39,7 +39,7 @@ steps:
     actions:
       - type: createIssue
         title: Bug found, please fix
-        with: 02.1_bug-issue.md
+        body: 02.1_bug-issue.md
         action_id: bugIssue
       - type: respond
         with: 02.2_next-step.md
@@ -129,7 +129,7 @@ steps:
       - type: mergePullRequest
       - type: CreateIssue
         title: Creating a release
-        with: 08.1_create-release.md
+        body: 08.1_create-release.md
         action_id: nextIssue
       - type: respond
         with: 8.2_point-to-issue.md
