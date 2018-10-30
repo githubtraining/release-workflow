@@ -132,7 +132,7 @@ steps:
         body: 08.1_create-release.md
         action_id: nextIssue
       - type: respond
-        with: 8.2_point-to-issue.md
+        body: 08.2_point-to-issue.md
         data:
           url: '%actions.nextIssue.data.html_url%'
 
