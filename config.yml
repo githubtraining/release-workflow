@@ -133,6 +133,7 @@ steps:
         action_id: nextIssue
       - type: respond
         with: 08.2_point-to-issue.md
+        issue: 5
         data:
           url: '%actions.nextIssue.data.html_url%'
 
