@@ -1,7 +1,8 @@
 title: Creating a Release Based Workflow
-tagline:
-description:
+tagline: Learn and practice a workflow based around creating releases on GitHub.
+description: This course focuses on releases, and more complex branching strategies.
 tags:
+  - GitHub 
 template:
     name: release-based-workflow
     repo: release-workflow-template
