@@ -11,6 +11,8 @@ before:
   - type: createIssue
     title: Welcome
     body: 00.1_welcome.md
+    data:
+      releases: '{{ repoURl }}/releases'
   - type: octokit
     method: projects.createRepoProject
     owner: '%payload.repository.owner.login%'
