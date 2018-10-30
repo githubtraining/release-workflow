@@ -60,20 +60,16 @@ steps:
   - title: Create a release branch
     description: Create a release branch that will represent work for a specific release.
     event: create.branch
-    link: '{{ repoURL }}/pulls/3'
-    actions:
-      #- type: gate #check that release branch is matching HEADS with master
-      # store the branch name for use in step 7
-      - type: closeIssue
-        issue: 3
+    link: '{{ repoURL }}/pull/3'
+    actions:      #store the branch name for use in step 7
       - type: respond
         with: 04.1_release-branch.md
 
   #5
-  - title: Create a pull request
-    description: Create a pull request to introduce the bug fix into the release branch.
-    event: pull_request.created
-    link: '{{ repoURL }}/pulls/3'
+  - title: Edit a pull request
+    description: Edit the pull request to introduce the bug fix into the release branch.
+    event: pull_request.edited
+    link: '{{ repoURL }}/pull/3'
     actions:
       - type: removeBranchProtection
       - type: respond
@@ -83,7 +79,7 @@ steps:
   - title: Merge the pull request
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
-    link: '{{ repoURL }}/pulls/4'
+    link: '{{ repoURL }}/pull/3'
     actions:
       - type: gate
         left: '%payload.pull_request.merged%'
@@ -123,7 +119,7 @@ steps:
   - title: Approve a pull request
     description: Review and approve the pull request that Learning Lab opened.
     event: pull_request_review.submitted
-    link: '{{ repoURL }}/pulls/5'
+    link: '{{ repoURL }}/pull/5'
     actions:
       # - type: gate #make sure it was approval
       - type: mergePullRequest
