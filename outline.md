@@ -2,8 +2,8 @@
 Bot opens welcome issue describing the motivation for GitHub Flow as a simple workflow. Bot identifies the need for a release, explains how it can be achieved with tags. Requests that the user tags the current codebase.
 
 ### 1
-User adds a tag.
-Bot responds to the tag, explains how this can be used. Bot crafts a release.
+User adds a release.
+Bot responds to the tag, explains how this can be used.
 
 ### 2
 User closes issue.

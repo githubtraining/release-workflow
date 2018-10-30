@@ -2,7 +2,7 @@ title: Creating a Release Based Workflow
 tagline: Learn and practice a workflow based around creating releases on GitHub.
 description: This course focuses on releases, and more complex branching strategies.
 tags:
-  - GitHub 
+  - GitHub
 template:
     name: release-based-workflow
     repo: release-workflow-template
@@ -25,12 +25,6 @@ steps:
     event: release.published
     link: '{{ repoUrl }}/issues/1'
     actions:
-      - type: repos.createRelease
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
-        tag_name: v1.0
-        name: Release 1.0
-        body: This is the first stable release of this app.
       - type: respond
         issue: Welcome
         with: 01.1_more-about-tags.md
@@ -39,7 +33,7 @@ steps:
 
   #2
   - title: Close the first issue
-    description: Once you see the new release has been created, close the first issue.
+    description: Now that the first release has been created, close the first issue.
     event: issues.closed
     link: '{{ repoUrl }}/issue/1'
     actions:
