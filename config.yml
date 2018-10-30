@@ -73,8 +73,9 @@ steps:
     link: '{{ repoURL }}/pull/3'
     actions:
       - type: removeBranchProtection
-      - type: respond
-        with: 05.1_merge.md
+      - type: createReview
+        body: 05.1_merge.md
+        event: APPROVE
 
   #6
   - title: Merge the pull request
