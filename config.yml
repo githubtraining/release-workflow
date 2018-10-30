@@ -46,7 +46,9 @@ steps:
         data:
           url: '%actions.bugIssue.data.html_url%'
           releases: '{{ repoURl }}/releases'
-
+      - type: closeIssue
+        issue: Welcome
+        
   #2
   - title: Organize the release with a project board
     description: Add a card to the "in progress" column of the project board.
