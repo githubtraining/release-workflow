@@ -59,7 +59,7 @@ steps:
   #4
   - title: Create a release branch
     description: Create a release branch that will represent work for a specific release.
-    event: create.branch
+    event: create
     link: '{{ repoURL }}/pull/3'
     actions:      #store the branch name for use in step 7
       - type: respond
