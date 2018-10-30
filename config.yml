@@ -3,71 +3,82 @@ tagline:
 description:
 tags:
 template:
-    name: #nameforusers
-    repo: #source
+    name: release-based-workflow
+    repo: release-workflow-template
 before:
   - type: updateBranchProtection
   - type: createIssue
     title: Welcome
     body: 00.1_welcome.md
-  - type: # create project board
-  - type: # create pull request for step 7
-    title: # ?
-    with: 00.2_bot-pr.md
-    head: #?
+  - type: octokit
+    method: projects.createRepoProject
+    owner: '%payload.repository.owner.login%'
+    repo: '%payload.repository.name%'
+    name: Release 2.0
+    body: This project board tracks the steps necessary for Release 2.0.
 
 steps:
   #1
   - title: Add a tag
     description: Add a tag to the most recent commit on the master branch.
-    event: #tag added
+    event: release.published
     link: '{{ repoUrl }}/issues/1'
     actions:
-      - type: #create a release
+      - type: repos.createRelease
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        tag_name: v1.0
+        name: Release 1.0
+        body: This is the first stable release of this app.
       - type: respond
         issue: Welcome
         with: 01.1_more-about-tags.md
         data:
-          url: #linktorelease
+          url: '{{ repoURl }}/releases'
 
   #2
   - title: Close the first issue
     description: Once you see the new release has been created, close the first issue.
-    event: #issue closed
+    event: issues.closed
     link: '{{ repoUrl }}/issue/1'
     actions:
-      - type: #new issue
+      - type: createIssue
+        title: Bug found, please fix
         with: 02.1_bug-issue.md
+        action_id: bugIssue
       - type: respond
         with: 02.2_next-step.md
         data:
-          url: #next issue
+          url: '%actions.bugIssue.data.html_url%'
 
   #3
   - title: Fix the bug
     description: Create a branch, fix the bug, and open a pull request.
-    event: #pull request opened
-    link: #issue 2
+    event: pull_request.opened
+    link: '{{ repoUrl }}/issues/2'
     actions:
-      - type: # request changes
-        with: 03.1_request-changes.md
+      - type: createReview
+        body: 03.1_request-changes.md
+        event: REQUEST_CHANGES
 
   #4
   - title: Create a release branch
     description: Create a release branch that will represent work for a specific release.
-    event: #new branch created
-    link: #pr review from last step
+    event: create.branch
+    link: '{{ repoURL }}/pulls/3'
     actions:
-      - type: gate #check that release branch is matching HEADS with master
-      - type: #close pull request
+      #- type: gate #check that release branch is matching HEADS with master
+      # store the branch name for use in step 7
+      - type: closeIssue
+        issue: 3
       - type: respond
         with: 04.1_release-branch.md
 
   #5
   - title: Create a pull request
     description: Create a pull request to introduce the bug fix into the release branch.
-    event: # pull request created
-    link: # instructions from last closed pull request
+    event: pull_request.created
+    link: '{{ repoURL }}/pulls/3'
     actions:
       - type: removeBranchProtection
       - type: respond
@@ -77,7 +88,7 @@ steps:
   - title: Merge the pull request
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
-    link: #most recent pull request
+    link: '{{ repoURL }}/pulls/4'
     actions:
       - type: gate
         left: '%payload.pull_request.merged%'
@@ -102,24 +113,29 @@ steps:
   #7
   - title: Add to the project board
     description: Add a card to the "in progress" column of the project board.
-    event: # card added to project board
-    link: # project board
+    event: project_card.created
+    link: '{{ repoURL }}/projects/1'
     actions:
       - type: respond
-        # respond in issue
-        with: 07.1_project.md
+        body: 07.1_project.md
+        issue: Managing releases
       - type: respond
-        # respond in pull request
         with: 07.2_approve.md
+        issue: 4
+      - type: createPullRequest
+        title: Merge the release branch into master
+        body: 07.3_bot-pr.md
+        head: v2.0 #for testing purposes only, should be replaced by variable in step 4
 
   #8
   - title: Approve a pull request
     description: Review and approve the pull request that Learning Lab opened.
-    event: #approval on bot's PR
-    link: #bot's PR
+    event: pull_request_review.submitted
+    link: '{{ repoURL }}/pulls/5'
     actions:
-      - type: #bot merges
-      - type: #create issue
+      # - type: gate #make sure it was approval
+      - type: mergePullRequest
+      - type: CreateIssue
         title: Creating a release
         with: 08.1_create-release.md
         action_id: nextIssue
@@ -131,8 +147,8 @@ steps:
   #9
   - title: Create a final release & changelog
     description: Create a release with the most recent code, and craft release notes as a changelog.
-    event: # new release
-    link: #issue instructions
+    event: release.published
+    link: '{{ repoURL }}/issues/6'
     actions:
       - type: respond
         with: 09.1_congratulations.md
