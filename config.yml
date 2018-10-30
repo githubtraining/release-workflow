@@ -38,7 +38,7 @@ steps:
     actions:
       - type: createIssue
         title: Bug found, please fix
-        body: 01.1_bug-issue.md
+        body: 01.1_bug-issue.md #edit to have instructions be: added to project board
         action_id: bugIssue
       - type: respond
         issue: Welcome
@@ -46,27 +46,37 @@ steps:
         data:
           url: '%actions.bugIssue.data.html_url%'
           releases: '{{ repoURl }}/releases'
+
   #2
+  - title: Organize the release with a project board
+    description: Add a card to the "in progress" column of the project board.
+    event: project_card.created
+    link: '{{ repoURL }}/projects/1'
+    actions:
+      - type: respond
+        with: 02.1_fix-bug.md
+
+  #3
   - title: Fix the bug
     description: Create a branch, fix the bug, and open a pull request.
     event: pull_request.opened
     link: '{{ repoUrl }}/issues/2'
     actions:
       - type: createReview
-        body: 02.1_request-changes.md
+        body: 03.1_request-changes.md
         event: REQUEST_CHANGES
 
-  #3
+  #4
   - title: Create a release branch
     description: Create a release branch that will represent work for a specific release.
     event: create
     link: '{{ repoURL }}/pull/3'
     actions:      #store the branch name for use in step 6
       - type: respond
-        with: 03.1_release-branch.md
+        with: 04.1_release-branch.md
         issue: 3
 
-  #4
+  #5
   - title: Edit a pull request
     description: Edit the pull request to introduce the bug fix into the release branch.
     event: pull_request.edited
@@ -74,10 +84,10 @@ steps:
     actions:
       - type: removeBranchProtection
       - type: createReview
-        body: 04.1_merge.md
+        body: 05.1_merge.md
         event: APPROVE
 
-  #5
+  #6
   - title: Merge the pull request
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
@@ -93,32 +103,21 @@ steps:
             repo: '%payload.repository.name%'
             number: '%payload.repository.pull_request.number%'
           - type: respond
-            with: 05.1_early-close.md
-      - type: createIssue
-        title: Managing releases
-        body: 05.2_managing-releases.md
-        action_id: releaseIssue
-      - type: respond
-        with: 05.3_nice-merge.md
-        data:
-          url: '%actions.releaseIssue.data.html_url%'
-      - type: closeIssue
-        issue: 2
-
-  #6
-  - title: Add to the project board
-    description: Add a card to the "in progress" column of the project board.
-    event: project_card.created
-    link: '{{ repoURL }}/projects/1'
-    actions:
+            with: 06.1_early-close.md
       - type: updateBranchProtection
       - type: createPullRequest
         title: Merge the release branch into master
         body: 06.2_bot-pr.md
         head: v1.0 #for testing purposes only, should be replaced by variable in step 4
+        action_id: releasePR
       - type: respond
-        with: 06.1_project.md
-        issue: Managing releases
+        with: 06.3_nice-merge.md
+        data:
+          url: '%actions.releasePR.data.html_url%'
+      - type: closeIssue
+        issue: 2
+        # update project board
+
 
   #7
   - title: Approve a pull request
