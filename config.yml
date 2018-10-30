@@ -15,8 +15,8 @@ before:
     method: projects.createRepoProject
     owner: '%payload.repository.owner.login%'
     repo: '%payload.repository.name%'
-    name: Release 2.0
-    body: This project board tracks the steps necessary for Release 2.0.
+    name: Release 1.0
+    body: This project board tracks the steps necessary for Release 1.0.
 #  - type: octokit
 #    method: projects.createProjectColumn
 #    project_id: 1
