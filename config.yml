@@ -114,7 +114,7 @@ steps:
         issue: Managing releases
       - type: createPullRequest
         title: Merge the release branch into master
-        body: 07.3_bot-pr.md
+        body: 07.2_bot-pr.md
         head: v1.0 #for testing purposes only, should be replaced by variable in step 4
 
   #8

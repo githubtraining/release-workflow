@@ -39,3 +39,5 @@ User installs Probot App (?) to craft the changelog.
 ----
 
 Should user add the pull request/issue as step 3, for the bug issue created in step 2 ?
+
+Project board doesn't have columns.
