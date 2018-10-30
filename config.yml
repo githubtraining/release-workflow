@@ -50,7 +50,7 @@ steps:
     description: Create a release branch that will represent work for a specific release.
     event: create
     link: '{{ repoURL }}/pull/3'
-    actions:      #store the branch name for use in step 7
+    actions:      #store the branch name for use in step 6
       - type: respond
         with: 03.1_release-branch.md
         issue: 3
@@ -117,6 +117,11 @@ steps:
     actions:
       # - type: gate #make sure it was approval
       - type: mergePullRequest
+      - type: octokit
+        method: gitdata.deleteReference
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        ref: heads/v1.0 #this should also be taken from a variable
       - type: createIssue
         title: Creating a release
         body: 07.1_create-release.md
