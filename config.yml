@@ -116,7 +116,7 @@ steps:
         body: 07.2_bot-pr.md
         head: v1.0 #for testing purposes only, should be replaced by variable in step 4
       - type: respond
-        body: 07.1_project.md
+        with: 07.1_project.md
         issue: Managing releases
 
   #8
