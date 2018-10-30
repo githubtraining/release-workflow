@@ -31,8 +31,8 @@ before:
 #    name: Done
 steps:
   #1
-  - title: Add a tag
-    description: Add a tag to the most recent commit on the master branch.
+  - title: Create a release
+    description: Create a release for the most recent commit on the master branch.
     event: release.published
     link: '{{ repoUrl }}/issues/1'
     actions:
