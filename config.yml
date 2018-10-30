@@ -153,4 +153,4 @@ steps:
     actions:
       - type: respond
         with: 08.1_congratulations.md
-        issue: 6
+        issue: 5
