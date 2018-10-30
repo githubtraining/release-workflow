@@ -43,3 +43,5 @@ Should user add the pull request/issue as step 3, for the bug issue created in s
 Project board doesn't have columns.
 
 Have bot delete branch after merge in step 8.
+
+User shouldn't close issue in step 2. Bot should do that for them, and the comment should only point them to the next issue. All important info should be in first OP or in a comment that's posted in "before" step. 
