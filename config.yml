@@ -17,18 +17,19 @@ before:
     repo: '%payload.repository.name%'
     name: Release 1.0
     body: This project board tracks the steps necessary for Release 1.0.
-#  - type: octokit
-#    method: projects.createProjectColumn
-#    project_id: 1
-#    name: To Do
-#  - type: octokit
-#    method: projects.createProjectColumn
-#    project_id: 1
-#    name: In progress
-#  - type: octokit
-#    method: projects.createProjectColumn
-#    project_id: 1
-#    name: Done
+    action_id: project # Added this!
+  - type: octokit
+    method: projects.createProjectColumn
+    project_id: '%actions.project.data.id%'
+    name: To Do
+  - type: octokit
+    method: projects.createProjectColumn
+    project_id: '%actions.project.data.id%'
+    name: In progress
+  - type: octokit
+    method: projects.createProjectColumn
+    project_id: '%actions.project.data.id%'
+    name: Done
 steps:
   #1
   - title: Create a release
