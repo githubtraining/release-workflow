@@ -145,3 +145,4 @@ steps:
     actions:
       - type: respond
         with: 09.1_congratulations.md
+        issue: 6

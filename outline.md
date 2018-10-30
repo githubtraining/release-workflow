@@ -46,4 +46,6 @@ Have bot delete branch after merge in step 8.
 
 User shouldn't close issue in step 2. Bot should do that for them, and the comment should only point them to the next issue. All important info should be in first OP or in a comment that's posted in "before" step.
 
-Maybe set branch protections again before bot opens its own PR so user doesn't just merge 
+Maybe set branch protections again before bot opens its own PR so user doesn't just merge
+
+"managing releases" issue should be closed at some point, maybe when release is merged 
