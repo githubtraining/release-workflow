@@ -127,7 +127,7 @@ steps:
     actions:
       # - type: gate #make sure it was approval
       - type: mergePullRequest
-      - type: CreateIssue
+      - type: createIssue
         title: Creating a release
         body: 08.1_create-release.md
         action_id: nextIssue

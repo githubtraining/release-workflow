@@ -38,6 +38,8 @@ User installs Probot App (?) to craft the changelog.
 
 ----
 
-Should user add the pull request/issue as step 3, for the bug issue created in step 2 ?
+Should user add the pull request/issue as step 3, for the bug issue created in step 2 ? Change name of project to Release 1.0?
 
 Project board doesn't have columns.
+
+Have bot delete branch after merge in step 8.
