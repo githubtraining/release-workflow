@@ -64,6 +64,7 @@ steps:
     actions:      #store the branch name for use in step 7
       - type: respond
         with: 04.1_release-branch.md
+        issue: 3
 
   #5
   - title: Edit a pull request
