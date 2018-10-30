@@ -119,13 +119,10 @@ steps:
       - type: respond
         body: 07.1_project.md
         issue: Managing releases
-      - type: respond
-        with: 07.2_approve.md
-        issue: 4
       - type: createPullRequest
         title: Merge the release branch into master
         body: 07.3_bot-pr.md
-        head: v2.0 #for testing purposes only, should be replaced by variable in step 4
+        head: v1.0 #for testing purposes only, should be replaced by variable in step 4
 
   #8
   - title: Approve a pull request
