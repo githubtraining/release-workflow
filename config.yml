@@ -22,14 +22,17 @@ before:
     method: projects.createProjectColumn
     project_id: '%actions.project.data.id%'
     name: To Do
+    action_id: columnToDo
   - type: octokit
     method: projects.createProjectColumn
     project_id: '%actions.project.data.id%'
     name: In progress
+    action_id: columnInProgress
   - type: octokit
     method: projects.createProjectColumn
     project_id: '%actions.project.data.id%'
     name: Done
+    action_id: columnDone
 steps:
 
   #1
@@ -42,8 +45,8 @@ steps:
         title: Organizing a release
         body: 01.1_tracking-issue.md
         action_id: trackingIssue
-      - type: #  create a release branch using the `release-*` convention
-      - type: # set up branch protections using wildcards for branch name
+      - type: updateBranchProtection
+        branch: release-v1.0 #this doesn't use wildcards, but would it be possible?
       - type: respond
         issue: Welcome
         with: 01.2_next-step.md
@@ -62,9 +65,9 @@ steps:
       - type: createIssue
         title: Please fix this bug
         body: 02.1_fix-bug.md
+        action_id: fixbugIssue
       - type: response
         with: 02.2_response-release.md
-      # TODO: what if the bug is a hotfix that could also be applied into master? (note: @briana is not sure what was meant by this original todo)
 
   #3
   - title: Fix the bug
@@ -72,10 +75,22 @@ steps:
     event: pull_request.opened
     link: '{{ repoUrl }}/issues/3'
     actions:
-      - type: # validate base branch is the branch created in step 1
-      - type: # approval,
-        with: 03.1_approval.md
-      - type: # update project board
+      - type: gate
+        left: '%payload.base.ref%'
+        operator: ===
+        right: release-v1.0
+        else:
+          - type: respond
+            with: 03.2_wrong-base.md
+          - type: closeIssue
+            issue: '%payload.pull_request.url%'
+      - type: createReview
+        body: 03.1_approval.md
+        event: APPROVE
+      - type: projects.createProjectCard
+        column_id: '%actions.columnInProgress.data.id%'
+        content_id: '%actions.fixbugIssue.data.id%'
+        content_type: Issue
 
   #4
   - title: Merge the pull request
@@ -103,7 +118,14 @@ steps:
         with: 04.2_response.md
         data:
           url: '%actions.releaseIssue.data.html_url%'
-      - type: # update project board
+      - type: projects.createProjectCard
+        column_id: '%actions.columnDone.data.id%'
+        content_id: '%actions.fixbugIssue.data.id%'
+        content_type: Issue
+      - type: projects.createProjectCard
+        column_id: '%actions.columnInProgress.data.id%'
+        content_id: '%actions.releaseIssue.data.id%'
+        content_type: Issue
 
     #5
     - title: Prepare to merge your release into master
@@ -111,15 +133,31 @@ steps:
       event: pull_request.opened
       link: '{{ repoURL }}/issues/5'
       actions:
-        - type: gate #check the proper base (master), proper branch (created step 1) being PRed
+        - type: gate
+          gates:
+            left: '%payload.base.ref%'
+            operator: ===
+            right: master
+            left: '%payload.base.ref%'
+            operator: ===
+            right: release-v1.0
+            else:
+              - type: respond
+                with: 05.2_wrong-base.md
+              - type: closeIssue
+                issue: '%payload.pull_request.url%'
         - type: # create 1+ PRs (and project cards, etc) of other work that will go into the release branch
           title: More features for the next release
           body: 05.1_new-pr.md
           head: #new branch we need to create
           base: #branch created in PR
+          action_id: morefeaturesPR
         - type: response
           with: 05.2_response.md
-      # update project board
+        - type: projects.createProjectCard
+          column_id: '%actions.columnInProgress.data.id%'
+          content_id: '%actions.morefeaturesPR.data.id%'
+          content_type: PullRequest
 
     #6
     - title: Review other work for this release
@@ -141,7 +179,7 @@ steps:
           with: 06.2_response.md
           data:
             url: '%actions.appIssue.data.html_url%'
-        # update project board
+        - type: # update project board
 
     #7
     - title: Automate your release notes
@@ -157,7 +195,7 @@ steps:
             url: '{{ repoURL }}/pull/6'
         - type: closeIssue
           issue: Install a GitHub app to help with release notes
-        # update project board
+        - type: # update project board
 
     #8
     - title: Merge the release
