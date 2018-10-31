@@ -84,6 +84,7 @@ steps:
       # commenting in the organizational issue, pointing user to next bug. Leaving issue open, mapping "tracking issue" concept
       - type: respond
         with: 02.2_response-release.md
+        issue: Welcome
 
   #3 - User creates a branch making a change and opens a pull request against `base: release-v1.0`
   - title: Fix the bug
@@ -101,6 +102,7 @@ steps:
           # we comment and tell them that they should try again
           - type: respond
             with: 03.2_wrong-base.md
+            issue: Fix the bug
           # and we close the pull request, unmerged
           - type: closeIssue
             issue: '%payload.pull_request.url%'
@@ -133,6 +135,7 @@ steps:
           # We comment and let them know that they should merge
           - type: respond
             with: 04.3_early-close.md
+            issue: '%payload.repository.pull_request.number%'
       # If the user does everything right, we create the next issue with instructions to create a pull request from the release branch into master
       - type: createIssue
         title: Create a realease pull request
@@ -181,6 +184,7 @@ steps:
           # We comment and tell them that the base and compare are wrong, and to try again
           - type: respond
             with: 05.2_wrong-base.md
+            issue: '%payload.repository.pull_request.number%'
           # We close the pull request
           - type: closeIssue
             issue: '%payload.pull_request.url%'
@@ -202,6 +206,7 @@ steps:
       # We reply in the new pull request they created and point them to the new PR we just made
       - type: respond
         with: 05.2_response.md
+        issue: '%payload.repository.pull_request.number%'
 
   #6 - The user should review the pull request
   - title: Review other work for this release
@@ -232,6 +237,7 @@ steps:
       # We respond in the merged pull request pointing the user to the new issue
       - type: respond
         with: 06.2_response.md
+        issue: '%payload.repository.pull_request.number%'
         data:
           url: '%actions.appIssue.data.html_url%'
 
@@ -262,6 +268,7 @@ steps:
   - title: Merge the release
     description: Merge the release branch in the pull request to finalize this release.
     event: pull_request.closed
+    link:
     actions:
       # We check that the pull request was merged, not closed
       - type: gate
