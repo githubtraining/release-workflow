@@ -87,7 +87,8 @@ steps:
       - type: createReview
         body: 03.1_approval.md
         event: APPROVE
-      - type: projects.createProjectCard
+      - type: octokit
+        method: projects.createProjectCard
         column_id: '%actions.columnInProgress.data.id%'
         content_id: '%actions.fixbugIssue.data.id%'
         content_type: Issue
@@ -119,17 +120,20 @@ steps:
         with: 04.2_response.md
         data:
           url: '%actions.releaseIssue.data.html_url%'
-      - type: projects.createProjectCard
+      - type: octokit
+        method: projects.createProjectCard
         column_id: '%actions.columnDone.data.id%'
         content_id: '%actions.fixbugIssue.data.id%'
         content_type: Issue
         action_id: fixbugIssueCard
-      - type: projects.createProjectCard
+      - type: octokit
+        method: projects.createProjectCard
         column_id: '%actions.columnInProgress.data.id%'
         content_id: '%actions.releaseIssue.data.id%'
         content_type: Issue
         action_id: releaseIssueCard
-      - type: projects.moveProjectCard
+      - type: octokit
+        method: projects.moveProjectCard
         card_id: '%actions.fixbugIssueCard.data.id%'
         position: 1
         column_id: '%actions.columnDone.data.id%'
@@ -161,7 +165,8 @@ steps:
         action_id: morefeaturesPR
       - type: respond
         with: 05.2_response.md
-      - type: projects.createProjectCard
+      - type: octokit
+        method: projects.createProjectCard
         column_id: '%actions.columnInProgress.data.id%'
         content_id: '%actions.morefeaturesPR.data.id%'
         content_type: PullRequest
@@ -187,7 +192,8 @@ steps:
         with: 06.2_response.md
         data:
           url: '%actions.appIssue.data.html_url%'
-      - type: projects.moveProjectCard
+      - type: octokit
+        method: projects.moveProjectCard
         card_id: '%actions.morefeaturesPRCard.data.id%'
         position: 1
         column_id: '%actions.columnDone.data.id%'
@@ -206,7 +212,8 @@ steps:
           url: '{{ repoURL }}/pull/6'
       - type: closeIssue
         issue: Install a GitHub app to help with release notes
-      - type: projects.createProjectCard
+      - type: octokit
+        method: projects.createProjectCard
         column_id: '%actions.columnInProgress.data.id%'
         content_id: '%actions.appIssue.data.id%'
         content_type: Issue
@@ -236,7 +243,8 @@ steps:
         with: 08.3_nice-merge.md
         data:
           url: '%actions.finalIssue.data.html_url%'
-      - type: projects.moveProjectCard
+      - type: octokit
+        method: projects.moveProjectCard
         card_id: '%actions.appIssueCard.data.id%'
         position: 1
         column_id: '%actions.columnDone.data.id%'
@@ -250,7 +258,8 @@ steps:
       - type: respond
         with: 09.1_congratulations.md
         issue: Finalize the release
-      - type: projects.moveProjectCard
+      - type: octokit
+        method: projects.moveProjectCard
         card_id: '%actions.releaseIssueCard.data.id%'
         position: 1
         column_id: '%actions.columnDone.data.id%'
