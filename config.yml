@@ -141,7 +141,7 @@ steps:
       # We move the new issue for creating a release branch into the "in progress" column of the project board
       - type: octokit
         method: projects.createProjectCard
-        column_id: '%actions.columnInProgress.data.id%'
+        column_id: 1
         content_id: '%actions.releaseIssue.data.id%'
         content_type: Issue
         action_id: releaseIssueCard
