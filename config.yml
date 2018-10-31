@@ -75,7 +75,7 @@ steps:
       - type: # validate base branch is the branch created in step 1
       - type: # approval,
         with: 03.1_approval.md
-    # update project board
+      - type: # update project board
 
   #4
   - title: Merge the pull request
@@ -93,7 +93,7 @@ steps:
             repo: '%payload.repository.name%'
             number: '%payload.repository.pull_request.number%'
           - type: respond
-            with: 04.1_early-close.md
+            with: 04.3_early-close.md
       - type: createIssue
         title: Create a realease pull request
         body: 04.1_release-pr.md
@@ -103,7 +103,7 @@ steps:
         with: 04.2_response.md
         data:
           url: '%actions.releaseIssue.data.html_url%'
-      # update project board
+      - type: # update project board
 
     #5
     - title: Prepare to merge your release into master
