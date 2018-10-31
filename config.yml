@@ -207,6 +207,8 @@ steps:
       - type: respond
         with: 05.2_response.md
         issue: '%payload.pull_request.number%'
+        data:
+          url: '%actions.morefeaturesPR.data.html_url%'
 
   #6 - The user should review the pull request
   - title: Review other work for this release
