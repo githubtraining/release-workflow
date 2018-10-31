@@ -142,17 +142,17 @@ steps:
     actions:
       - type: gate
         gates:
-          left: '%payload.base.ref%'
-          operator: ===
-          right: master
-          left: '%payload.head.ref%'
-          operator: ===
-          right: release-v1.0
-          else:
-            - type: respond
-              with: 05.2_wrong-base.md
-            - type: closeIssue
-              issue: '%payload.pull_request.url%'
+          - left: '%payload.base.ref%'
+            operator: ===
+            right: master
+          - left: '%payload.head.ref%'
+            operator: ===
+            right: release-v1.0
+        else:
+          - type: respond
+            with: 05.2_wrong-base.md
+          - type: closeIssue
+            issue: '%payload.pull_request.url%'
       - type: createPullRequest
         title: More features for the next release
         body: 05.1_new-pr.md
