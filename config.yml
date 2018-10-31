@@ -173,10 +173,10 @@ steps:
       # We check that the pull request has the correct "base" and "compare"
       - type: gate
         gates:
-          - left: '%payload.base.ref%'
+          - left: '%payload.pull_request.base.ref%'
             operator: ===
             right: master
-          - left: '%payload.head.ref%'
+          - left: '%payload.pull_request.base.ref%'
             operator: ===
             right: release-v1.0
         # If they do not have the correct base and compare fields...
