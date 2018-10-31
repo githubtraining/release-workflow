@@ -96,7 +96,7 @@ steps:
       - type: gate
         left: '%payload.base.ref%'
         operator: ===
-        right: release-v1.0
+        right: 'release-v1.0'
         # If the user opened a pull request to master instead...
         else:
           # we comment and tell them that they should try again
@@ -105,7 +105,7 @@ steps:
             issue: '%payload.pull_request.number%'
           # and we close the pull request, unmerged
           - type: closeIssue
-            issue: '%payload.pull_request.url%'
+            issue: '%payload.pull_request.number%'
       # If the user does everything right, we remove protections on the release branch so they can merge
       - type: removeBranchProtection
         branch: release-v1.0
