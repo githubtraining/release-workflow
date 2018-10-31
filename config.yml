@@ -77,7 +77,7 @@ steps:
       # We want to track the progress of all things that we can in the project board, so as soon as we created the issue, we move it to the project board
       - type: octokit
         method: projects.createProjectCard
-        column_id: '%actions.columnInProgress.data.id%'
+        column_id: 1
         content_id: '%actions.fixbugIssue.data.id%'
         content_type: Issue
         action_id: fixbugIssueCard
