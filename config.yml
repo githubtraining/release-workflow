@@ -77,10 +77,10 @@ steps:
       # We want to track the progress of all things that we can in the project board, so as soon as we created the issue, we move it to the project board
       - type: octokit
         method: projects.createProjectCard
-        column_id: '1'
+        column_id: '%actions.columnInProgress.data.id%'
         content_id: '%actions.fixbugIssue.data.id%'
         content_type: Issue
-      #  action_id: fixbugIssueCard
+        action_id: fixbugIssueCard
       # commenting in the organizational issue, pointing user to next bug. Leaving issue open, mapping "tracking issue" concept
       - type: respond
         with: 02.2_response-release.md
@@ -141,7 +141,7 @@ steps:
       # We move the new issue for creating a release branch into the "in progress" column of the project board
       - type: octokit
         method: projects.createProjectCard
-        column_id: 1
+        column_id: '%actions.columnInProgress.data.id%'
         content_id: '%actions.releaseIssue.data.id%'
         content_type: Issue
         action_id: releaseIssueCard
