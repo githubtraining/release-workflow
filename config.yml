@@ -127,9 +127,12 @@ steps:
       event: pull_request_review.submitted
       link: '{{ repoURL }}/pull/7'
       actions:
-        - type: mergeBranch
-          head: #new branch we need to create
-          base: #branch created in PR
+        - type: mergePullRequest
+        - type: octokit
+          method: gitdata.deleteReference
+          owner: '%payload.repository.owner.login%'
+          repo: '%payload.repository.name%'
+          ref: #whatever we named it
         - type: createIssue
           title: Install a GitHub app to help with release notes
           body: 06.1_github-app.md
@@ -190,29 +193,3 @@ steps:
       - type: response
         with: 09.1_congratulations.md
         issue: Finalize the release
-
-  ----
-
-
-  #7
-  - title: Approve a pull request
-    description: Review and approve the pull request that Learning Lab opened.
-    event: pull_request_review.submitted
-    link: '{{ repoURL }}/pull/5'
-    actions:
-      # - type: gate #make sure it was approval
-      - type: mergePullRequest
-      - type: octokit
-        method: gitdata.deleteReference
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
-        ref: heads/v1.0 #this should also be taken from a variable
-      - type: createIssue
-        title: Creating a release
-        body: 07.1_create-release.md
-        action_id: nextIssue
-      - type: respond
-        with: 07.2_point-to-issue.md
-        issue: 4
-        data:
-          url: '%actions.nextIssue.data.html_url%'
