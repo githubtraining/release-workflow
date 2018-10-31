@@ -58,7 +58,7 @@ steps:
         with: 01.2_next-step.md
         data:
           url: '%actions.trackingIssue.data.html_url%'
-          releases: '{{ repoURl }}/releases'
+          releases: '{{ repoUrl }}/releases'
       # closes the welcome issue
       - type: closeIssue
         issue: Welcome
@@ -67,7 +67,7 @@ steps:
   - title: Prepare for the next release
     description: Add a card to the "in progress" column of the project board.
     event: project_card.created
-    link: '{{ repoURL }}/projects/1'
+    link: '{{ repoUrl }}/projects/1'
     actions:
       # creating a third issue for the user, asking them to go through the GitHub flow to make a change
       - type: createIssue
@@ -116,7 +116,7 @@ steps:
   - title: Merge the pull request
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
-    link: '{{ repoURL }}/pull/4'
+    link: '{{ repoUrl }}/pull/4'
     actions:
       # Because the event is the same for both, we make sure that the pull request is merged, and not just closed.
       - type: gate
@@ -135,7 +135,7 @@ steps:
             with: 04.3_early-close.md
       # If the user does everything right, we create the next issue with instructions to create a pull request from the release branch into master
       - type: createIssue
-        title: Create a realease pull request
+        title: Create a release pull request
         body: 04.1_release-pr.md
         action_id: releaseIssue
       # We move the new issue for creating a release branch into the "in progress" column of the project board
@@ -165,7 +165,7 @@ steps:
   - title: Prepare to merge your release into master
     description: Create the release pull request with base as master, and compare as the release branch.
     event: pull_request.opened
-    link: '{{ repoURL }}/issues/5'
+    link: '{{ repoUrl }}/issues/5'
     actions:
       # We check that the pull request has the correct "base" and "compare"
       - type: gate
@@ -207,7 +207,7 @@ steps:
   - title: Review other work for this release
     description: The release will contain work from multiple pull requests. Approve the other open pull request to merge changes into the release branch.
     event: pull_request_review.submitted
-    link: '{{ repoURL }}/pull/7'
+    link: '{{ repoUrl }}/pull/7'
     actions:
       # We merge the pull request into the release branch
       - type: mergePullRequest
