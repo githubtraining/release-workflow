@@ -66,7 +66,7 @@ steps:
         title: Please fix this bug
         body: 02.1_fix-bug.md
         action_id: fixbugIssue
-      - type: response
+      - type: respond
         with: 02.2_response-release.md
 
   #3
@@ -114,7 +114,7 @@ steps:
         title: Create a realease pull request
         body: 04.1_release-pr.md
         action_id: releaseIssue
-      - type: response
+      - type: respond
         issue: 4
         with: 04.2_response.md
         data:
@@ -159,7 +159,7 @@ steps:
         head: feature-for-v1
         base: release-v1.0
         action_id: morefeaturesPR
-      - type: response
+      - type: respond
         with: 05.2_response.md
       - type: projects.createProjectCard
         column_id: '%actions.columnInProgress.data.id%'
@@ -183,7 +183,7 @@ steps:
         title: Install a GitHub app to help with release notes
         body: 06.1_github-app.md
         action_id: appIssue
-      - type: response
+      - type: respond
         with: 06.2_response.md
         data:
           url: '%actions.appIssue.data.html_url%'
@@ -200,7 +200,7 @@ steps:
       - type: createReview
         body: 07.1_approve-release.md
         event: APPROVE
-      - type: response
+      - type: respond
         with: 07.2_point-to-pr.md
         data:
           url: '{{ repoURL }}/pull/6'
@@ -232,7 +232,7 @@ steps:
         title: Finalize the release
         body: 08.2_finalize-release.md
         action_id: finalIssue
-      - type: response
+      - type: respond
         with: 08.3_nice-merge.md
         data:
           url: '%actions.finalIssue.data.html_url%'
@@ -247,7 +247,7 @@ steps:
     event: release.published
     link: '%actions.finalIssue.data.html_url%'
     actions:
-      - type: response
+      - type: respond
         with: 09.1_congratulations.md
         issue: Finalize the release
       - type: projects.moveProjectCard
