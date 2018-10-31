@@ -91,6 +91,7 @@ steps:
         column_id: '%actions.columnInProgress.data.id%'
         content_id: '%actions.fixbugIssue.data.id%'
         content_type: Issue
+        action_id: fixbugIssueCard
 
   #4
   - title: Merge the pull request
@@ -122,112 +123,134 @@ steps:
         column_id: '%actions.columnDone.data.id%'
         content_id: '%actions.fixbugIssue.data.id%'
         content_type: Issue
+        action_id: fixbugIssueCard
       - type: projects.createProjectCard
         column_id: '%actions.columnInProgress.data.id%'
         content_id: '%actions.releaseIssue.data.id%'
         content_type: Issue
+        action_id: releaseIssueCard
+      - type: projects.moveProjectCard
+        card_id: '%actions.fixbugIssueCard.data.id%'
+        position: 1
+        column_id: '%actions.columnDone.data.id%'
 
-    #5
-    - title: Prepare to merge your release into master
-      description: Create the release pull request with base as master, and compare as the release branch.
-      event: pull_request.opened
-      link: '{{ repoURL }}/issues/5'
-      actions:
-        - type: gate
-          gates:
-            left: '%payload.base.ref%'
-            operator: ===
-            right: master
-            left: '%payload.base.ref%'
-            operator: ===
-            right: release-v1.0
-            else:
-              - type: respond
-                with: 05.2_wrong-base.md
-              - type: closeIssue
-                issue: '%payload.pull_request.url%'
-        - type: # create 1+ PRs (and project cards, etc) of other work that will go into the release branch
-          title: More features for the next release
-          body: 05.1_new-pr.md
-          head: #new branch we need to create
-          base: #branch created in PR
-          action_id: morefeaturesPR
-        - type: response
-          with: 05.2_response.md
-        - type: projects.createProjectCard
-          column_id: '%actions.columnInProgress.data.id%'
-          content_id: '%actions.morefeaturesPR.data.id%'
-          content_type: PullRequest
-
-    #6
-    - title: Review other work for this release
-      description: The release will contain work from multiple pull requests. Approve the other open pull request to merge changes into the release branch.
-      event: pull_request_review.submitted
-      link: '{{ repoURL }}/pull/7'
-      actions:
-        - type: mergePullRequest
-        - type: octokit
-          method: gitdata.deleteReference
-          owner: '%payload.repository.owner.login%'
-          repo: '%payload.repository.name%'
-          ref: #whatever we named it
-        - type: createIssue
-          title: Install a GitHub app to help with release notes
-          body: 06.1_github-app.md
-          action_id: appIssue
-        - type: response
-          with: 06.2_response.md
-          data:
-            url: '%actions.appIssue.data.html_url%'
-        - type: # update project board
-
-    #7
-    - title: Automate your release notes
-      description: Install the GitHub app to automate the production of release notes.
-      event: #TODO
-      actions:
-        - type: createReview
-          body: 07.1_approve-release.md
-          event: APPROVE
-        - type: response
-          with: 07.2_point-to-pr.md
-          data:
-            url: '{{ repoURL }}/pull/6'
-        - type: closeIssue
-          issue: Install a GitHub app to help with release notes
-        - type: # update project board
-
-    #8
-    - title: Merge the release
-      description: Merge the release branch in the pull request to finalize this release.
-      event: pull_request.closed
-      actions:
-        - type: gate
-          left: '%payload.pull_request.merged%'
+  #5
+  - title: Prepare to merge your release into master
+    description: Create the release pull request with base as master, and compare as the release branch.
+    event: pull_request.opened
+    link: '{{ repoURL }}/issues/5'
+    actions:
+      - type: gate
+        gates:
+          left: '%payload.base.ref%'
+          operator: ===
+          right: master
+          left: '%payload.base.ref%'
+          operator: ===
+          right: release-v1.0
           else:
-            - type: octokit
-              method: issues.edit
-              state: open
-              owner: '%payload.repository.owner.login%'
-              repo: '%payload.repository.name%'
-              number: '%payload.repository.pull_request.number%'
             - type: respond
-              with: 08.1_early-close.md
-        - type: createIssue
-          title: Finalize the release
-          body: 08.2_finalize-release.md
-          action_id: finalIssue
-        - type: response
-          with: 08.3_nice-merge.md
-          data:
-            url: '%actions.finalIssue.data.html_url%'
+              with: 05.2_wrong-base.md
+            - type: closeIssue
+              issue: '%payload.pull_request.url%'
+      - type: createPullRequest
+        title: More features for the next release
+        body: 05.1_new-pr.md
+        head: feature-for-v1
+        base: release-v1.0
+        action_id: morefeaturesPR
+      - type: response
+        with: 05.2_response.md
+      - type: projects.createProjectCard
+        column_id: '%actions.columnInProgress.data.id%'
+        content_id: '%actions.morefeaturesPR.data.id%'
+        content_type: PullRequest
+        action_id: morefeaturesPRCard
 
-    #9
-    title: Finalize the release
+  #6
+  - title: Review other work for this release
+    description: The release will contain work from multiple pull requests. Approve the other open pull request to merge changes into the release branch.
+    event: pull_request_review.submitted
+    link: '{{ repoURL }}/pull/7'
+    actions:
+      - type: mergePullRequest
+      - type: octokit
+        method: gitdata.deleteReference
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        ref: feature-for-v1
+      - type: createIssue
+        title: Install a GitHub app to help with release notes
+        body: 06.1_github-app.md
+        action_id: appIssue
+      - type: response
+        with: 06.2_response.md
+        data:
+          url: '%actions.appIssue.data.html_url%'
+      - type: projects.moveProjectCard
+        card_id: '%actions.morefeaturesPRCard.data.id%'
+        position: 1
+        column_id: '%actions.columnDone.data.id%'
+
+  #7
+  - title: Automate your release notes
+    description: Install the GitHub app to automate the production of release notes.
+    event: issues.closed
+    actions:
+      - type: createReview
+        body: 07.1_approve-release.md
+        event: APPROVE
+      - type: response
+        with: 07.2_point-to-pr.md
+        data:
+          url: '{{ repoURL }}/pull/6'
+      - type: closeIssue
+        issue: Install a GitHub app to help with release notes
+      - type: projects.createProjectCard
+        column_id: '%actions.columnInProgress.data.id%'
+        content_id: '%actions.appIssue.data.id%'
+        content_type: Issue
+        action_id: appIssueCard
+
+  #8
+  - title: Merge the release
+    description: Merge the release branch in the pull request to finalize this release.
+    event: pull_request.closed
+    actions:
+      - type: gate
+        left: '%payload.pull_request.merged%'
+        else:
+          - type: octokit
+            method: issues.edit
+            state: open
+            owner: '%payload.repository.owner.login%'
+            repo: '%payload.repository.name%'
+            number: '%payload.repository.pull_request.number%'
+          - type: respond
+            with: 08.1_early-close.md
+      - type: createIssue
+        title: Finalize the release
+        body: 08.2_finalize-release.md
+        action_id: finalIssue
+      - type: response
+        with: 08.3_nice-merge.md
+        data:
+          url: '%actions.finalIssue.data.html_url%'
+      - type: projects.moveProjectCard
+        card_id: '%actions.appIssueCard.data.id%'
+        position: 1
+        column_id: '%actions.columnDone.data.id%'
+
+  #9
+  - title: Finalize the release
     description: Complete the release by publishing the drafted release
-    event: #??
+    event: release.published
     link: '%actions.finalIssue.data.html_url%'
     actions:
       - type: response
         with: 09.1_congratulations.md
         issue: Finalize the release
+      - type: projects.moveProjectCard
+        card_id: '%actions.releaseIssueCard.data.id%'
+        position: 1
+        column_id: '%actions.columnDone.data.id%'
