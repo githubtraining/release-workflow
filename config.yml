@@ -223,7 +223,7 @@ steps:
         method: gitdata.deleteReference
         owner: '%payload.repository.owner.login%'
         repo: '%payload.repository.name%'
-        ref: 'feature-for-v1'
+        ref: 'refs/feature-for-v1'
       # We create a new issue with instructions for release notes
       - type: createIssue
         title: Install a GitHub app to help with release notes
