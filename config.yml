@@ -102,7 +102,7 @@ steps:
           # we comment and tell them that they should try again
           - type: respond
             with: 03.2_wrong-base.md
-            issue: Fix the bug
+            issue: '%payload.pull_request.number%'
           # and we close the pull request, unmerged
           - type: closeIssue
             issue: '%payload.pull_request.url%'
@@ -113,7 +113,6 @@ steps:
       - type: createReview
         body: 03.1_approval.md
         event: APPROVE
-        issue: '%payload.pull_request.url%'
 
   #4 - The user merges their pull request into the release branch
   - title: Merge the pull request
