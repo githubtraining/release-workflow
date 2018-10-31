@@ -253,14 +253,14 @@ steps:
       - type: createReview
         body: 07.1_approve-release.md
         event: APPROVE
-        issue: '{{ repoUrl }}/pull/6'
+        number: 6
       # We remove branch protections so they can merge
       - type: removeBranchProtection
       # We comment in the release note issue, pointing to the release pull request
       - type: respond
         with: 07.2_point-to-pr.md
         data:
-          url: '{{ repoURL }}/pull/7'
+          url: '{{ repoURL }}/issue/8'
       # We move the app issue to the done column of the project board
       #- type: octokit
       #  method: projects.moveProjectCard
