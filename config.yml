@@ -206,7 +206,7 @@ steps:
       # We reply in the new pull request they created and point them to the new PR we just made
       - type: respond
         with: 05.2_response.md
-        issue: '%payload.repository.pull_request.number%'
+        issue: '%payload.pull_request.number%'
 
   #6 - The user should review the pull request
   - title: Review other work for this release
