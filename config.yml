@@ -113,6 +113,7 @@ steps:
       - type: createReview
         body: 03.1_approval.md
         event: APPROVE
+        issue: '%payload.pull_request.url%'
 
   #4 - The user merges their pull request into the release branch
   - title: Merge the pull request
