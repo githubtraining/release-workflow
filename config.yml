@@ -245,6 +245,7 @@ steps:
   - title: Automate your release notes
     description: Install the GitHub app to automate the production of release notes.
     event: issues.closed
+    link: '{{ repoUrl }}/issue/8'
     actions:
       # We approve the release pull request
       - type: createReview
@@ -268,7 +269,7 @@ steps:
   - title: Merge the release
     description: Merge the release branch in the pull request to finalize this release.
     event: pull_request.closed
-    link:
+    link: '{{ repoURL }}/pull/7'
     actions:
       # We check that the pull request was merged, not closed
       - type: gate
