@@ -94,7 +94,7 @@ steps:
     actions:
       # We make sure that the user's pull request has the base set to `release-v1.0`
       - type: gate
-        left: '%payload.base.ref%'
+        left: '%payload.pull_request.base.ref%'
         operator: ===
         right: 'release-v1.0'
         # If the user opened a pull request to master instead...
