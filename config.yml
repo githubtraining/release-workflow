@@ -145,7 +145,7 @@ steps:
           left: '%payload.base.ref%'
           operator: ===
           right: master
-          left: '%payload.base.ref%'
+          left: '%payload.head.ref%'
           operator: ===
           right: release-v1.0
           else:
