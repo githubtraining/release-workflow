@@ -55,7 +55,7 @@ steps:
       # responding in the first welcome issue, pointing the user to the next issue just created
       - type: respond
         issue: Welcome
-        with: 01.2_next-step.md
+        with: 00.2_next-step.md
         data:
           url: '%actions.trackingIssue.data.html_url%'
           releases: '{{ repoURl }}/releases'
@@ -83,7 +83,7 @@ steps:
       #  action_id: fixbugIssueCard
       # commenting in the organizational issue, pointing user to next bug. Leaving issue open, mapping "tracking issue" concept
       - type: respond
-        with: 02.2_response-release.md
+        with: 01.2_response-release.md
         issue: Organizing a release
 
   #3 - User creates a branch making a change and opens a pull request against `base: release-v1.0`
