@@ -66,6 +66,7 @@ steps:
         title: Creating a release branch
         body: 02.1_release-branches.md
         action_id: branchPrompt
+    # TODO: Add branch validation 
       - type: respond
         with: 01.4_projects-success.md
         data:
