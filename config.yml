@@ -73,17 +73,22 @@ steps:
       with: 01.2_project-column.md
 
   #3 - The user should create a project column
-  - title: Prepare for the next release
-    description: Create a project board.
-    event: project.created
+  - title: Adding columns
+    description: Create a project column.
+    event: project_column.created
     link: '{{ repoUrl }}/issues/2'
     actions:
     - type: respond
-      with: 01.2_project-column.md
+      with: 01.3_move-a-card.md
 
-
-
-
+  #4 - The user should add a task to the project board
+  - title: Triaging issues
+    description: Add an issue to a project column.
+    event: project_card.created
+    link: '{{ repoUrl }}/issues/2'
+    actions:
+    - type: respond
+      with: 01.4_projects-success.md
       # creating a third issue for the user, asking them to go through the GitHub flow to make a change
       - type: createIssue
         title: Please fix this bug
@@ -101,7 +106,7 @@ steps:
         with: 01.2_response-release.md
         issue: Organizing a release
 
-  #3 - User creates a branch making a change and opens a pull request against `base: release-v1.0`
+  #5 - User creates a branch making a change and opens a pull request against `base: release-v1.0`
   - title: Fix the bug
     description: Create a branch, fix the bug, and open a pull request.
     event: pull_request.opened
@@ -129,7 +134,7 @@ steps:
         body: 03.1_approval.md
         event: APPROVE
 
-  #4 - The user merges their pull request into the release branch
+  #6 - The user merges their pull request into the release branch
   - title: Merge the pull request
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
@@ -179,7 +184,7 @@ steps:
       - type: updateBranchProtection
         branch: release-v1.0
 
-  #5 - The user opens a pull request from the release branch into master
+  #7 - The user opens a pull request from the release branch into master
   - title: Prepare to merge your release into master
     description: Create the release pull request with base as master, and compare as the release branch.
     event: pull_request.opened
@@ -225,7 +230,7 @@ steps:
         data:
           url: '%actions.morefeaturesPR.data.html_url%'
 
-  #6 - The user should review the pull request
+  #8 - The user should review the pull request
   - title: Review other work for this release
     description: The release will contain work from multiple pull requests. Approve the other open pull request to merge changes into the release branch.
     event: pull_request_review.submitted
@@ -258,7 +263,7 @@ steps:
         data:
           url: '%actions.appIssue.data.html_url%'
 
-  #7 - The user installs the GitHub app, and closes this issue.
+  #9 - The user installs the GitHub app, and closes this issue.
   - title: Automate your release notes
     description: Install the GitHub app to automate the production of release notes.
     event: issues.closed
@@ -283,7 +288,7 @@ steps:
       #  position: 1
       #  column_id: '%actions.columnDone.data.id%'
 
-  #8 - The user merges the release branch into master
+  #10 - The user merges the release branch into master
   - title: Merge the release
     description: Merge the release branch in the pull request to finalize this release.
     event: pull_request.closed
@@ -322,7 +327,7 @@ steps:
         data:
           url: '%actions.finalIssue.data.html_url%'
 
-  #9 - User creates a release from the draft
+  #11 - User creates a release from the draft
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
