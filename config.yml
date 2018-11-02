@@ -97,6 +97,8 @@ steps:
     event: create
     link: '{{ repoUrl }}/issues/3'
     actions:
+    - type: updateBranchProtection
+      branch: release-v1.0
     - type: respond
       with: 02.2_branch-success.md
       # creating a third issue for the user, asking them to go through the GitHub flow to make a change
