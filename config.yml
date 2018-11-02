@@ -149,7 +149,7 @@ steps:
         action_id: releaseIssue
       # We comment in the merged pull request, and point them to the new issue with instructions
       - type: respond
-        link: '{{ repoUrl }}/issues/3'
+        link: '{{ repoUrl }}/pull/4'
         with: 03.3_response.md
         data:
           url: '%actions.releaseIssue.data.html_url%'
