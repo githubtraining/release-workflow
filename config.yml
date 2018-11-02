@@ -17,28 +17,28 @@ before:
     title: Welcome
     body: 00.1_welcome.md
   # octokit method to create a project board for the user to use throughout the course, and methods following to create each column
-  - type: octokit
-    method: projects.createRepoProject
-    owner: '%payload.repository.owner.login%'
-    repo: '%payload.repository.name%'
-    name: Release 1.0
-    body: This project board tracks the steps necessary for Release 1.0.
-    action_id: project
-  - type: octokit
-    method: projects.createProjectColumn
-    project_id: '%actions.project.data.id%'
-    name: To Do
-    action_id: columnToDo
-  - type: octokit
-    method: projects.createProjectColumn
-    project_id: '%actions.project.data.id%'
-    name: In progress
-    action_id: columnInProgress
-  - type: octokit
-    method: projects.createProjectColumn
-    project_id: '%actions.project.data.id%'
-    name: Done
-    action_id: columnDone
+  # - type: octokit
+  #   method: projects.createRepoProject
+  #   owner: '%payload.repository.owner.login%'
+  #   repo: '%payload.repository.name%'
+  #   name: Release 1.0
+  #   body: This project board tracks the steps necessary for Release 1.0.
+  #   action_id: project
+  # - type: octokit
+  #   method: projects.createProjectColumn
+  #   project_id: '%actions.project.data.id%'
+  #   name: To Do
+  #   action_id: columnToDo
+  # - type: octokit
+  #   method: projects.createProjectColumn
+  #   project_id: '%actions.project.data.id%'
+  #   name: In progress
+  #   action_id: columnInProgress
+  # - type: octokit
+  #   method: projects.createProjectColumn
+  #   project_id: '%actions.project.data.id%'
+  #   name: Done
+  #   action_id: columnDone
 steps:
 
   #1 - ask the user to create a beta release from the most recent commit on master
@@ -47,10 +47,10 @@ steps:
     event: release.published
     link: '{{ repoUrl }}/issues/1'
     actions:
-      # creating an issue with the next instructions, giving information about how to organize releases, and instructing user to add this card to the project board
+      # creates an issue with the next instructions about project boards
       - type: createIssue
         title: Organizing a release
-        body: 01.1_tracking-issue.md
+        body: 01.1_project-board.md
         action_id: trackingIssue
       # responding in the first welcome issue, pointing the user to the next issue just created
       - type: respond
@@ -63,12 +63,27 @@ steps:
       - type: closeIssue
         issue: Welcome
 
-  #2 - The user should have moved the 2nd issue we created, "Organizing a release", to the "In progress" column of the project board
+  #2 - The user should create a project board
   - title: Prepare for the next release
-    description: Add a card to the "in progress" column of the project board.
-    event: project_card.created
-    link: '{{ repoURL }}/projects/1'
+    description: Create a project board.
+    event: project.created
+    link: '{{ repoUrl }}/issues/2'
     actions:
+    - type: respond
+      with: 01.2_project-column.md
+
+  #3 - The user should create a project column
+  - title: Prepare for the next release
+    description: Create a project board.
+    event: project.created
+    link: '{{ repoUrl }}/issues/2'
+    actions:
+    - type: respond
+      with: 01.2_project-column.md
+
+
+
+
       # creating a third issue for the user, asking them to go through the GitHub flow to make a change
       - type: createIssue
         title: Please fix this bug
