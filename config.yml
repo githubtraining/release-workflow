@@ -85,11 +85,14 @@ steps:
     event: project_card.moved
     link: '{{ repoUrl }}/issues/2'
     actions:
-    - type: respond
-      with: 01.4_projects-success.md
       - type: createIssue
         title: Creating a release branch
         body: 02.1_release-branches.md
+        action_id: branchPrompt
+      - type: respond
+        with: 01.4_projects-success.md
+        data:
+          url: '%actions.branchPrompt.data.html_url%'
 
   #5 - The user should create a release branch
   - title: Branching strategies
@@ -97,15 +100,17 @@ steps:
     event: create
     link: '{{ repoUrl }}/issues/3'
     actions:
-    - type: updateBranchProtection
-      branch: release-v1.0
-    - type: respond
-      with: 02.2_branch-success.md
+      - type: updateBranchProtection
+        branch: release-v1.0
       # creating a third issue for the user, asking them to go through the GitHub flow to make a change
       - type: createIssue
         title: Please fix this bug
         body: 03.1_fix-bug.md
         action_id: fixbugIssue
+      - type: respond
+        with: 02.2_branch-success.md
+        data:
+          url: '%actions.fixbugIssue.data.html_url%'
       # We want to track the progress of all things that we can in the project board, so as soon as we created the issue, we move it to the project board
       #- type: octokit
       #  method: projects.createProjectCard
