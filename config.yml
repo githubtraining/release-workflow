@@ -10,8 +10,6 @@ template:
 before:
   # enable branch protection
   - type: updateBranchProtection
-  - type: updateBranchProtection
-    branch: release-v1.0
   # creating a welcome issue that will have the user's first instructions
   - type: createIssue
     title: Welcome
@@ -89,10 +87,22 @@ steps:
     actions:
     - type: respond
       with: 01.4_projects-success.md
+      - type: createIssue
+        title: Creating a release branch
+        body: 02.1_release-branches.md
+
+  #5 - The user should create a release branch
+  - title: Branching strategies
+    description: Create a release branch
+    event: create
+    link: '{{ repoUrl }}/issues/3'
+    actions:
+    - type: respond
+      with: 02.2_branch-success.md
       # creating a third issue for the user, asking them to go through the GitHub flow to make a change
       - type: createIssue
         title: Please fix this bug
-        body: 02.1_fix-bug.md
+        body: 03.1_fix-bug.md
         action_id: fixbugIssue
       # We want to track the progress of all things that we can in the project board, so as soon as we created the issue, we move it to the project board
       #- type: octokit
@@ -102,12 +112,9 @@ steps:
       #  content_type: Issue
       #  action_id: fixbugIssueCard
       # commenting in the organizational issue, pointing user to next bug. Leaving issue open, mapping "tracking issue" concept
-      - type: respond
-        with: 01.2_response-release.md
-        issue: Organizing a release
 
-  #5 - User creates a branch making a change and opens a pull request against `base: release-v1.0`
-  - title: Fix the bug
+  #6 - User creates a branch making a change and opens a pull request against `base: release-v1.0`
+  - title: Adding a feature
     description: Create a branch, fix the bug, and open a pull request.
     event: pull_request.opened
     link: '{{ repoUrl }}/issues/3'
