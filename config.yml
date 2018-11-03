@@ -214,18 +214,13 @@ steps:
     event: pull_request.assigned
     link: '{{ repoURL }}/pull/6'
     actions:
-      # We approve the release pull request
       - type: respond
         body: 06.3_response.md
-        event: APPROVE
-        number: 6
-      # We remove branch protections so they can merge
-      - type: removeBranchProtection
 
-  #10 - The user merges the release branch into master
-  - title: Merge the release
-    description: Merge the release branch in the pull request to finalize this release.
-    event: pull_request.closed
+  #10 - The user approves the branch merge into master
+  - title: Approve the release
+    description: Approve the release branch in the pull request to finalize this release.
+    event: pull_request.review.submitted
     link: '{{ repoURL }}/pull/6'
     actions:
       # We check that the pull request was merged, not closed
@@ -243,6 +238,8 @@ steps:
           # We respond to ask them to merge instead of closing
           - type: respond
             with: 06.4_early-close.md
+      # We merge the pull request into the master branch
+      - type: mergePullRequest
       # We create a new issue asking them to turn the draft release into a published release
       - type: createIssue
         title: Finalize the release
