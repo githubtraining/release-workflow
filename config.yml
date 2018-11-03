@@ -66,7 +66,7 @@ steps:
         title: Creating a release branch
         body: 02.1_release-branches.md
         action_id: branchPrompt
-    # TODO: Add branch validation 
+    # TODO: Add branch validation
       - type: respond
         with: 01.4_projects-success.md
         data:
@@ -184,18 +184,8 @@ steps:
             issue: '%payload.pull_request.url%'
       # If they did everything right, we create a new pull request going into the release branch.
       # Currently the change is very minor, but it should make sense with the release.
-      - type: createPullRequest
-        title: More features for the next release
-        body: 05.1_new-pr.md
-        head: feature-for-v1
-        base: release-v1.0
-        action_id: morefeaturesPR
-      # We reply in the new pull request they created and point them to the new PR we just made
-      - type: respond
-        with: 05.2_response.md
-        issue: '%payload.pull_request.number%'
-        data:
-          url: '%actions.morefeaturesPR.data.html_url%'
+      # TODO: bot should approve the PR
+
 
   #9 - The user should review the pull request
   - title: Review other work for this release
