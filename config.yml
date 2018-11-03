@@ -159,7 +159,7 @@ steps:
         branch: release-v1.0
 
   #8 - The user opens a pull request from the release branch into master
-  - title: Prepare to merge your release into master
+  - title: Open a release pull request
     description: Create the release pull request with base as master, and compare as the release branch.
     event: pull_request.opened
     link: '{{ repoURL }}/issues/5'
@@ -184,40 +184,35 @@ steps:
             issue: '%payload.pull_request.url%'
       # If they did everything right, we create a new pull request going into the release branch.
       # Currently the change is very minor, but it should make sense with the release.
-      # TODO: bot should approve the PR
-
-
-  #9 - The user should review the pull request
-  - title: Review other work for this release
-    description: The release will contain work from multiple pull requests. Approve the other open pull request to merge changes into the release branch.
-    event: pull_request_review.submitted
-    link: '{{ repoURL }}/pull/7'
-    actions:
-      # We merge the pull request into the release branch
+      - type: createPullRequest
+        title: More features for the next release
+        body: 05.1_new-pr.md
+        head: green-colors
+        base: release-v1.0
+        action_id: morefeaturesPR
       - type: mergePullRequest
-      # We delete the feature branch
+        pullRequest: 6
+      - type: respond
+        with: 05.2_response.md
+        issue: '%payload.pull_request.number%'
+        data:
+          url: '%actions.morefeaturesPR.data.html_url%'
       - type: octokit
         method: gitdata.deleteReference
         owner: '%payload.repository.owner.login%'
         repo: '%payload.repository.name%'
-        ref: heads/feature-for-v1
-      # We create a new issue with instructions for release notes
-      - type: createIssue
-        title: Install a GitHub app to help with release notes
-        body: 06.1_github-app.md
-        action_id: appIssue
-      # We respond in the merged pull request pointing the user to the new issue
+        ref: heads/green-colors
       - type: respond
-        with: 06.2_response.md
-        issue: '%payload.pull_request.number%'
-        data:
-          url: '%actions.appIssue.data.html_url%'
+        body: 06.1_successful-open.md
+        issue: 6
+      - type: respond
+        body: 06.2_github-app.md
+        issue: 6
 
-  #10 - The user installs the GitHub app, and closes this issue.
-  - title: Automate your release notes
-    description: Install the GitHub app to automate the production of release notes.
-    event: issues.closed
-    link: '{{ repoUrl }}/issue/8'
+  #9 - The user assigns themselves to the pull request
+  - title: Automation and assignment
+    description: Install the GitHub app to help with release notes, then assign yourself to the pull request
+    link: '{{ repoURL }}/pull/6'
     actions:
       # We approve the release pull request
       - type: createReview
@@ -232,7 +227,7 @@ steps:
         data:
           url: '{{ repoURL }}/issue/8'
 
-  #11 - The user merges the release branch into master
+  #10 - The user merges the release branch into master
   - title: Merge the release
     description: Merge the release branch in the pull request to finalize this release.
     event: pull_request.closed
@@ -264,7 +259,7 @@ steps:
         data:
           url: '%actions.finalIssue.data.html_url%'
 
-  #12 - User creates a release from the draft
+  #11 - User creates a release from the draft
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
