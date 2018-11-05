@@ -71,6 +71,7 @@ steps:
     # TODO: Add branch validation
       - type: respond
         with: 01.4_projects-success.md
+        issue: Organizing a release
         data:
           url: '%actions.branchPrompt.data.html_url%'
 
