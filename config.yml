@@ -88,6 +88,7 @@ steps:
         body: 03.1_update-readme.md
         action_id: fixbugIssue
       - type: respond
+        issue: Creating a release branch
         with: 02.2_branch-success.md
         data:
           url: '%actions.fixbugIssue.data.html_url%'
