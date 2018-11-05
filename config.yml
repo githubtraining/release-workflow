@@ -45,6 +45,7 @@ steps:
     link: '{{ repoUrl }}/issues/2'
     actions:
     - type: respond
+      issue: Organizing a release
       with: 01.2_project-column.md
 
   #3 - The user should create a project column
@@ -54,6 +55,7 @@ steps:
     link: '{{ repoUrl }}/issues/2'
     actions:
     - type: respond
+      issue: Organizing a release
       with: 01.3_move-a-card.md
 
   #4 - The user should add a card to the project board
