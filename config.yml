@@ -61,7 +61,7 @@ steps:
   #4 - The user should add a card to the project board
   - title: Triaging issues
     description: Add an issue to a project column.
-    event: project_card.moved
+    event: project_card.created
     link: '{{ repoUrl }}/issues/2'
     actions:
       - type: createIssue
