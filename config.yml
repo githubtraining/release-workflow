@@ -269,11 +269,11 @@ steps:
       #  position: 1
       #  column_id: '%actions.columnDone.data.id%'
 
-  #12 - Bug fix needed. User creates a hotfix branch and pull requests to release branch..
-    ## What should the user apply as a dummy commit?
+  #12 - Bug fix needed. App creates suggested change. User accepts it.
+  ## https://github.com/githubtraining/reviewing-a-pull-request/blob/master/config.yml#L137
 
-  #13 - App suggests appropriate change. User accepts suggested change and merges fix.
+  #13 - User merges hotfix into release branch.
 
-  #14 - User merges hotfix onto master.
+  #14 - User merges hotfix from release into master.
 
   #15 - User creates new release (and uses semantic versioning).
