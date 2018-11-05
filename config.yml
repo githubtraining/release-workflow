@@ -93,7 +93,7 @@ steps:
         data:
           url: '%actions.fixbugIssue.data.html_url%'
       - type: closeIssue
-        issue: Branching strategies
+        title: Creating a release branch
 
   #6 - User creates a branch making a change and opens a pull request against `base: release-v1.0`
   - title: Adding a feature
