@@ -246,7 +246,7 @@ steps:
       - type: respond
         with: 06.4_nice-merge.md
         data:
-          url: '%actions.bugFixPR.data.html_url%'
+          url: '%actions.finalIssue.data.html_url%'
 
   #11 - User creates a release from the draft
   - title: Finalize the release
