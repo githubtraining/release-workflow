@@ -38,6 +38,9 @@ steps:
       - type: closeIssue
         issue: Welcome
 
+  # TODO: Reduce project-mangement steps
+  # BODY: There are currently 3 project management steps, can we consolidate to 1? I envision that step would include creating an automated project board. 
+
   #2 - The user should create a project board
   - title: Prepare for the next release
     description: Create a project board.
@@ -148,6 +151,7 @@ steps:
       # If the user does everything right, we create the next issue with instructions to create a pull request from the release branch into master
       - type: createIssue
         title: Create a release pull request
+        # TODO: use a template for the PR so the learner doens't have to copy/paste
         body: 04.1_release-pr.md
         action_id: releaseIssue
       # We comment in the merged pull request, and point them to the new issue with instructions
