@@ -6,9 +6,9 @@ Avoiding bugs is difficult to do without a dedicated testing environment. With G
 
 Depending on your set-up, this might be the same for your website, app, or software as well. Testing your code once it reaches master is a poor practice, and you should try to avoid it.
 
-At GitHub, we specifically set up special [Deploy environments](https://githubengineering.com/deploying-branches-to-github-com/#deploy-environments) from unique branches, which allow us to test in production-esque environments without merging.
+At GitHub, we specifically create special [deploy environments](https://githubengineering.com/deploying-branches-to-github-com/#deploy-environments) from unique branches, which allow us to test in production-esque environments without merging first.
 
-Additionally, you might set up [continuous integration](https://github.com/marketplace/category/continuous-integration), so that a series of standardized checks will run on every commit that you push to an open pull request. This should help you identify your bugs and errors before they even make it to a staging environment.
+You might also consider setting up [continuous integration](https://github.com/marketplace/category/continuous-integration), so that a series of standardized tests will run on every commit that you push to an open pull request. This should help you identify your bugs and errors before they even make it to a staging environment.
 
 ## Step 13: Merging into the release branch
 
