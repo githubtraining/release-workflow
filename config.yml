@@ -193,7 +193,7 @@ steps:
   #9 - Bot creates a PR against release, learner approves, bot merges
   - title: Approve ships for an upcoming release
     description: Approve ships for an upcoming release
-    event: pull_request.review.submitted
+    event: pull_request_review.submitted
     link: '{{repoURL}}/pulls/8'
     actions:
     - type: mergePullRequest
@@ -221,7 +221,7 @@ steps:
   #11 - The user approves the branch merge into master
   - title: Approve the release
     description: Approve the release branch in the pull request to finalize this release.
-    event: pull_request.review.submitted
+    event: pull_request_review.submitted
     link: '{{ repoURL }}/pull/7'
     actions:
       # We check that the pull request was merged, not closed
