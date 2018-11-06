@@ -334,7 +334,7 @@ steps:
   - title: Finalize the hotfix release
     description: Complete the release by publishing the newest release
     event: release.published
-    link: '%actions.finalIssue.data.html_url%'
+    # link: '%actions.finalIssue.data.html_url%'
     actions:
       - type: createIssue
         title: Contratulations
