@@ -189,21 +189,27 @@ steps:
         head: green-colors
         base: release-v1.0
         action_id: morefeaturesPR
-      - type: mergePullRequest
-        pullRequest: 8
-      - type: octokit
-        method: gitdata.deleteReference
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
-        ref: heads/green-colors
-      - type: respond
-        with: 06.1_successful-open.md
-        issue: 7
-      - type: respond
-        with: 06.2_github-app.md
-        issue: 7
+    
+  #9 - Bot creates a PR against release, learner approves, bot merges
+  - title: Approve ships for an upcoming release
+    description: Approve ships for an upcoming release
+    event: pull_request.review.submitted
+    link: '{{repoURL}}/pulls/8'
+    actions:
+    - type: mergePullRequest
+    - type: octokit
+      method: gitdata.deleteReference
+      owner: '%payload.repository.owner.login%'
+      repo: '%payload.repository.name%'
+      ref: heads/green-colors
+    - type: respond
+      with: 06.1_successful-open.md
+      issue: 7
+    - type: respond
+      with: 06.2_github-app.md
+      issue: 7
 
-  #9 - The user assigns themselves to the pull request
+  #10 - The user assigns themselves to the pull request
   - title: Automation and assignment
     description: Install the GitHub app to help with release notes, then assign yourself to the pull request.
     event: pull_request.assigned
@@ -212,7 +218,7 @@ steps:
       - type: respond
         with: 06.3_response.md
 
-  #10 - The user approves the branch merge into master
+  #11 - The user approves the branch merge into master
   - title: Approve the release
     description: Approve the release branch in the pull request to finalize this release.
     event: pull_request.review.submitted
@@ -246,7 +252,7 @@ steps:
         data:
           url: '%actions.finalIssue.data.html_url%'
 
-  #11 - User creates a release from the draft
+  #12 - User creates a release from the draft
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
@@ -279,7 +285,7 @@ steps:
         commit_id: '%payload.pull_request.head.sha%'
         position: 5
 
-  #12 - User resolves the bug, then merges the pull request.
+  #13 - User resolves the bug, then merges the pull request.
   - title: Resolve and merge
     description: Resolve the bug, then merge the fix into the release branch
     event: pull_request.closed
@@ -302,7 +308,7 @@ steps:
     - type: respond
       with: 08.2_hotfix-merged-into-release.md
 
-  #13 - User creates a new PR, then merges into master
+  #14 - User creates a new PR, then merges into master
   - title: Update master
     description: Merge your release branch changes into master
     event: pull_request.closed
@@ -326,7 +332,7 @@ steps:
     - type: respond
       with: 09.1_last-release.md
 
-  #14 - User creates hotfix release (and uses semantic versioning).
+  #15 - User creates hotfix release (and uses semantic versioning).
   - title: Finalize the hotfix release
     description: Complete the release by publishing the newest release
     event: release.published
