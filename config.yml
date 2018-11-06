@@ -181,10 +181,8 @@ steps:
           # We comment and tell them that the base and compare are wrong, and to try again
           - type: respond
             with: 05.2_wrong-base.md
-            issue: '%payload.repository.pull_request.number%'
           # We close the pull request
           - type: closeIssue
-            issue: '%payload.pull_request.url%'
       # If they did everything right, we create a new pull request going into the release branch.
       # Currently the change is very minor, but it should make sense with the release.
       - type: createPullRequest
