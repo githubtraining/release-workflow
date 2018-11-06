@@ -244,36 +244,71 @@ steps:
       - type: respond
         with: 06.4_nice-merge.md
         data:
-          url: '%actions.finalIssue.data.html_url%'
+          url: '%actions.bugFixPR.data.html_url%'
 
   #11 - User creates a release from the draft
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
+    link: '%actions.newPullRequest.data.html_url%'
+    action_id: bugFixPR
+    actions:
+    ## Create a new PR for the hotfix
+      - type: createPullRequest
+        title: Accidental bugs
+        body: 08.1_hotfix-intro.md
+        head: bug-fix
+        base: release-v1.0
+        action_id: newPullRequest
+      ## Suggest a change in the new PR
+      - type: octokit
+        method: pullRequests.createComment
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        number: '%payload.pull_request.number%'
+        path: README.md
+        body: |
+          ```suggestion
+          FIX
+          ```
+          ### :keyboard: Activity: Apply the suggestion
+          1. Click **Apply suggestion**
+          2. Enter a commit message
+          3. Click **Commit changes**
+          For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
+        commit_id: '%payload.pull_request.head.sha%'
+        position: 5
+
+  #12 - User resolves the bug, then merges the pull request.
+  - title: Resolve and merge
+    description: Resolve the bug, then merge the fix into the release branch
+    event: pull_request.closed
+    link: '{{ repoURL }}/pull/8'
+    actions:
+      - type: respond
+        body: 08.2_hotfix-merged-into-release.md
+
+  #13 - User creates a new PR, then merges into master
+  - title: Update master
+    description: Merge your release branch changes into master
+    event: pull_request.closed
+    link: '{{ repoURL }}/pull/9'
+    actions:
+      - type: respond
+        body: 09.1_last-release.md
+
+  #14 - User creates hotfix release (and uses semantic versioning).
+  - title: Finalize the hotfix release
+    description: Complete the release by publishing the newest release
+    event: release.published
     link: '%actions.finalIssue.data.html_url%'
     actions:
-      # We comment in the issue, congratulating them
       - type: respond
-        with: 09.1_congratulations.md
+        with: 10.1_congratulations.md
+      # We comment in the issue, congratulating them
+      - type: createIssue
+        with: 10.1_congratulations.md
         issue: Finalize the release
       # We close the issue because we won't use it anymore
       - type: closeIssue
-        issue: Finalize the release
-      # We also close the tracking issue
-      - type: closeIssue
-        issue: Organizing a release
-      # We move the tracking issue to "done" on the project board
-      #- type: octokit
-      #  method: projects.moveProjectCard
-      #  card_id: '%actions.releaseIssueCard.data.id%'
-      #  position: 1
-      #  column_id: '%actions.columnDone.data.id%'
-
-  #12 - Bug fix needed. App creates suggested change. User accepts it.
-  ## https://github.com/githubtraining/reviewing-a-pull-request/blob/master/config.yml#L137
-
-  #13 - User merges hotfix into release branch.
-
-  #14 - User merges hotfix from release into master.
-
-  #15 - User creates new release (and uses semantic versioning).
+        issue: Finalize the hotfix release
