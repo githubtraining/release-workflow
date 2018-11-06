@@ -267,7 +267,7 @@ steps:
         method: pullRequests.createComment
         owner: '%payload.repository.owner.login%'
         repo: '%payload.repository.name%'
-        number: '%payload.pull_request.number%'
+        number: '%actions.newPullRequest.data.number%'
         commit_id: '%actions.newPullRequest.data.head.sha%'
         path: game.js
         body: |
