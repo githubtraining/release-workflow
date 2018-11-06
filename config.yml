@@ -190,7 +190,7 @@ steps:
         base: release-v1.0
         action_id: morefeaturesPR
       - type: mergePullRequest
-        pullRequest: 6
+        pullRequest: 8
       - type: octokit
         method: gitdata.deleteReference
         owner: '%payload.repository.owner.login%'
