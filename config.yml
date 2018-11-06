@@ -303,7 +303,7 @@ steps:
         - type: respond
           with: 04.2early-close.md
     - type: respond
-      body: 08.2_hotfix-merged-into-release.md
+      with: 08.2_hotfix-merged-into-release.md
 
   #13 - User creates a new PR, then merges into master
   - title: Update master
