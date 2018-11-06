@@ -189,6 +189,8 @@ steps:
         head: green-colors
         base: release-v1.0
         action_id: morefeaturesPR
+    - type: respond
+      with: 06.1_successful-open.md
     
   #9 - Bot creates a PR against release, learner approves, bot merges
   - title: Approve ships for an upcoming release
@@ -196,15 +198,14 @@ steps:
     event: pull_request_review.submitted
     link: '{{repoURL}}/pulls/8'
     actions:
+      # TODO: request a review from the learner
+      # TODO: adjust comment on PR #7 pointing to PR #8
     - type: mergePullRequest
     - type: octokit
       method: gitdata.deleteReference
       owner: '%payload.repository.owner.login%'
       repo: '%payload.repository.name%'
       ref: heads/green-colors
-    - type: respond
-      with: 06.1_successful-open.md
-      issue: 7
     - type: respond
       with: 06.2_github-app.md
       issue: 7
@@ -217,6 +218,10 @@ steps:
     actions:
       - type: respond
         with: 06.3_response.md
+        # TODO: release drafter should be merged into this PR so the learner sees it
+        
+        # TODO: Bug: learner can't approve their own PR
+        # Body: bot will prob have to create the release PR for them if the approval is the action we want the user to learn
 
   #11 - The user approves the branch merge into master
   - title: Approve the release
