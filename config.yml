@@ -261,15 +261,16 @@ steps:
         base: release-v1.0
         action_id: newPullRequest
       ## Suggest a change in the new PR
+      ## This is kind of forced, so we don't need to keep it. I like the extra layer of interaction, though.
       - type: octokit
         method: pullRequests.createComment
         owner: '%payload.repository.owner.login%'
         repo: '%payload.repository.name%'
         number: '%payload.pull_request.number%'
-        path: README.md
+        path: game.js
         body: |
           ```suggestion
-          FIX
+              starCtx.fillStyle = "#000";
           ```
           ### :keyboard: Activity: Apply the suggestion
           1. Click **Apply suggestion**
