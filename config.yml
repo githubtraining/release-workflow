@@ -265,6 +265,8 @@ steps:
       # TODO: Fix this octokit bug
       - type: octokit
         method: pullRequests.createComment
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
         number: '%payload.pull_request.number%'
         commit_id: '%actions.newPullRequest.data.head.sha%'
         path: game.js
