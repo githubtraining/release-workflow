@@ -199,10 +199,10 @@ steps:
         repo: '%payload.repository.name%'
         ref: heads/green-colors
       - type: respond
-        body: 06.1_successful-open.md
+        with: 06.1_successful-open.md
         issue: 7
       - type: respond
-        body: 06.2_github-app.md
+        with: 06.2_github-app.md
         issue: 7
 
   #9 - The user assigns themselves to the pull request
@@ -212,7 +212,7 @@ steps:
     link: '{{ repoURL }}/pull/7'
     actions:
       - type: respond
-        body: 06.3_response.md
+        with: 06.3_response.md
 
   #10 - The user approves the branch merge into master
   - title: Approve the release
