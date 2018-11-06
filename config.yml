@@ -261,8 +261,6 @@ steps:
       # TODO: Fix this octokit bug
       - type: octokit
         method: pullRequests.createComment
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
         number: '%payload.pull_request.number%'
         path: game.js
         body: |
@@ -274,7 +272,7 @@ steps:
           2. Enter a commit message
           3. Click **Commit changes**
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
-        commit_id: '%payload.pull_request.head.sha%'
+        commit_id: '%actions.newPullRequest.data.pull_request.head.sha%'
         position: 5
 
   #13 - User resolves the bug, then merges the pull request.
