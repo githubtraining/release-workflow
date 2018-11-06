@@ -275,6 +275,7 @@ steps:
               starCtx.fillStyle = "#000";
           ```
           ### :keyboard: Activity: Apply the suggestion
+          # TODO: Bug: suggested changes can only be applied by assignees. Assign the learner automatically.
           1. Click **Apply suggestion**
           2. Enter a commit message
           3. Click **Commit changes**
