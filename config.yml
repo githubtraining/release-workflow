@@ -285,6 +285,21 @@ steps:
     event: pull_request.closed
     link: '{{ repoURL }}/pull/8'
     actions:
+    - type: gate
+      left: '%payload.pull_request.merged%'
+      # If the pull request was closed with unmerged commits...
+      else:
+        # We reopen the pull request
+        - type: octokit
+          method: issues.edit
+          state: open
+          owner: '%payload.repository.owner.login%'
+          repo: '%payload.repository.name%'
+          number: '%payload.repository.pull_request.number%'
+        # We comment and let them know that they should merge
+        - type: respond
+          with: 04.2early-close.md
+          issue: '%payload.repository.pull_request.number%'
       - type: respond
         body: 08.2_hotfix-merged-into-release.md
 
@@ -294,8 +309,23 @@ steps:
     event: pull_request.closed
     link: '{{ repoURL }}/pull/9'
     actions:
-      - type: respond
-        body: 09.1_last-release.md
+    - type: gate
+      left: '%payload.pull_request.merged%'
+      # If the pull request was closed with unmerged commits...
+      else:
+        # We reopen the pull request
+        - type: octokit
+          method: issues.edit
+          state: open
+          owner: '%payload.repository.owner.login%'
+          repo: '%payload.repository.name%'
+          number: '%payload.repository.pull_request.number%'
+        # We comment and let them know that they should merge
+        - type: respond
+          with: 04.2early-close.md
+          issue: '%payload.repository.pull_request.number%'
+    - type: respond
+      with: 09.1_last-release.md
 
   #14 - User creates hotfix release (and uses semantic versioning).
   - title: Finalize the hotfix release
@@ -303,12 +333,5 @@ steps:
     event: release.published
     link: '%actions.finalIssue.data.html_url%'
     actions:
-      - type: respond
-        with: 10.1_congratulations.md
-      # We comment in the issue, congratulating them
       - type: createIssue
         with: 10.1_congratulations.md
-        issue: Finalize the release
-      # We close the issue because we won't use it anymore
-      - type: closeIssue
-        issue: Finalize the hotfix release
