@@ -39,7 +39,7 @@ steps:
         issue: Welcome
 
   # TODO: Reduce project-mangement steps
-  # BODY: There are currently 3 project management steps, can we consolidate to 1? I envision that step would include creating an automated project board. 
+  # BODY: There are currently 3 project management steps, can we consolidate to 1? I envision that step would include creating an automated project board.
 
   #2 - The user should create a project board
   - title: Prepare for the next release
@@ -195,7 +195,7 @@ steps:
         action_id: morefeaturesPR
       - type: respond
         with: 06.1_successful-open.md
-    
+
   #9 - Bot creates a PR against release, learner approves, bot merges
   - title: Approve ships for an upcoming release
     description: Approve ships for an upcoming release
@@ -223,7 +223,7 @@ steps:
       - type: respond
         with: 06.3_response.md
         # TODO: release drafter should be merged into this PR so the learner sees it
-        
+
         # TODO: Bug: learner can't approve their own PR
         # Body: bot will prob have to create the release PR for them if the approval is the action we want the user to learn
 
@@ -238,7 +238,6 @@ steps:
       # We create a new issue asking them to turn the draft release into a published release
       - type: createIssue
         title: Finalize the release
-        # TODO: Step on finalizing the relase supposed to create a new release 1.0, not update the beta.
         body: 07.1_finalize-release.md
         action_id: finalIssue
      # We comment in the merged pull request, pointing users to final instructions
