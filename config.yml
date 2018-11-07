@@ -260,7 +260,12 @@ steps:
         head: bug-fix
         base: release-v1.0
         action_id: newPullRequest
-        
+      - type: octokit
+        method: issues.addAssigneesToIssue
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        number: '%actions.newPullRequest.data.number%'
+        assignees: '%payload.repository.owner.login%'
       ## Suggest a change in the new PR
       - type: octokit
         method: pullRequests.createComment
