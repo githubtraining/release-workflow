@@ -221,7 +221,6 @@ steps:
     link: '{{ repoURL }}/pull/7'
     actions:
       - type: createReview
-        # TODO: rewrite response to account for approval by bot
         body: 06.3_response.md
         event: APPROVE
         # TODO: release drafter should be merged into this PR so the learner sees it
