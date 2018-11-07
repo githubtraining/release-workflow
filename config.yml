@@ -220,21 +220,32 @@ steps:
     event: pull_request.assigned
     link: '{{ repoURL }}/pull/7'
     actions:
-      - type: respond
-        with: 06.3_response.md
+      - type: createReview
+        body: 06.3_response.md
+        event: APPROVE
         # TODO: release drafter should be merged into this PR so the learner sees it
 
-        # TODO: Bug: learner can't approve their own PR
-        # Body: bot will prob have to create the release PR for them if the approval is the action we want the user to learn
-
   #11 - The user approves the branch merge into master
-  - title: Approve the release
-    description: Approve the release branch in the pull request to finalize this release.
-    event: pull_request_review.submitted
-    link: '{{ repoURL }}/pull/7'
+  - title: Cut the release
+    description: Merge the release branch.
+    event: pull_request.closed
+    link: '{{ repoUrl }}/pull/4'
     actions:
-      # We merge the pull request into the master branch
-      - type: mergePullRequest
+      # Because the event is the same for both, we make sure that the pull request is merged, and not just closed.
+      - type: gate
+        left: '%payload.pull_request.merged%'
+        # If the pull request was closed with unmerged commits...
+        else:
+          # We reopen the pull request
+          - type: octokit
+            method: issues.edit
+            state: open
+            owner: '%payload.repository.owner.login%'
+            repo: '%payload.repository.name%'
+            number: '%payload.repository.pull_request.number%'
+          # We comment and let them know that they should merge
+          - type: respond
+            with: 06.4early-close.md
       # We create a new issue asking them to turn the draft release into a published release
       - type: createIssue
         title: Finalize the release
