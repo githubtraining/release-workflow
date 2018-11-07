@@ -33,7 +33,7 @@ steps:
         with: 00.2_next-step.md
         data:
           url: '%actions.trackingIssue.data.html_url%'
-          releases: '{{ repoURl }}/releases'
+          releases: '{{ repoUrl }}/releases'
       # closes the welcome issue
       - type: closeIssue
         issue: Welcome
@@ -131,7 +131,7 @@ steps:
   - title: Merge the pull request
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
-    link: '{{ repoURL }}/pull/4'
+    link: '{{ repoUrl }}/pull/4'
     actions:
       # Because the event is the same for both, we make sure that the pull request is merged, and not just closed.
       - type: gate
@@ -167,7 +167,7 @@ steps:
   - title: Open a release pull request
     description: Create the release pull request with base as master, and compare as the release branch.
     event: pull_request.opened
-    link: '{{ repoURL }}/issues/5'
+    link: '{{ repoUrl }}/issues/5'
     actions:
       # We check that the pull request has the correct "base" and "compare"
       - type: gate
@@ -200,7 +200,7 @@ steps:
   - title: Approve ships for an upcoming release
     description: Approve ships for an upcoming release
     event: pull_request_review.submitted
-    link: '{{repoURL}}/pulls/8'
+    link: '{{ repoUrl }}/pull/7'
     actions:
       # TODO: request a review from the learner
       # TODO: adjust comment on PR #7 pointing to PR #8
