@@ -260,9 +260,8 @@ steps:
         head: bug-fix
         base: release-v1.0
         action_id: newPullRequest
+        
       ## Suggest a change in the new PR
-      ## This is kind of forced, so we don't need to keep it. I like the extra layer of interaction, though.
-      # TODO: Fix this octokit bug
       - type: octokit
         method: pullRequests.createComment
         owner: '%payload.repository.owner.login%'
@@ -275,7 +274,6 @@ steps:
               starCtx.fillStyle = "#000";
           ```
           ### :keyboard: Activity: Apply the suggestion
-          # TODO: Bug: suggested changes can only be applied by assignees. Assign the learner automatically.
           1. Click **Apply suggestion**
           2. Enter a commit message
           3. Click **Commit changes**
