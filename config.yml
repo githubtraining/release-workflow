@@ -282,6 +282,7 @@ steps:
           1. Click **Apply suggestion**
           2. Enter a commit message
           3. Click **Commit changes**
+          4. Merge this pull request.
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
 
