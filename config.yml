@@ -220,13 +220,11 @@ steps:
     event: pull_request.assigned
     link: '{{ repoURL }}/pull/7'
     actions:
-      - type: respond
-        with: 06.3_response.md
+      - type: createReview
+        body: 06.3_response.md  
+        event: APPROVE
         # TODO: release drafter should be merged into this PR so the learner sees it
         
-        # TODO: Bug: learner can't approve their own PR
-        # Body: bot will prob have to create the release PR for them if the approval is the action we want the user to learn
-
   #11 - The user approves the branch merge into master
   - title: Approve the release
     description: Approve the release branch in the pull request to finalize this release.
