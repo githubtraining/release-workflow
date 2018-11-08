@@ -167,7 +167,7 @@ steps:
           - left: '%payload.pull_request.base.ref%'
             operator: ===
             right: master
-          - left: '%payload.pull_request.base.ref%'
+          - left: '%payload.pull_request.head.ref%'
             operator: ===
             right: release-v1.0
         # If they do not have the correct base and compare fields...
