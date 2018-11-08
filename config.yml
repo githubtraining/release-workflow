@@ -262,7 +262,7 @@ steps:
         title: Accidental bugs
         body: 11.1_hotfix-intro.md
         head: bug-fix
-        base: master
+        base: release-v1.0
         action_id: newPullRequest
       - type: octokit
         method: issues.addAssigneesToIssue
