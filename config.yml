@@ -293,6 +293,11 @@ steps:
           4. Approve this pull request.
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
+      - type: respond
+        with: 11.2_next-bug.md
+        issue: Finalize the release
+        data:
+          url: '%actions.newPullRequest.data.html_url%'
 
   #12 - User resolves the bug, then merges the pull request.
   - title: Resolve and merge
