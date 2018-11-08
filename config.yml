@@ -299,7 +299,7 @@ steps:
   #13 - User resolves the bug, then merges the pull request.
   - title: Resolve and merge
     description: Resolve the bug, then merge the fix into the release branch
-    event: pull_request.synchronize
+    event: pull_request_review.submitted
     link: '{{ repoURL }}/pull/8'
     actions:
       # TODO: rewrite 08.2 so that it shows we will merge into the release branch next
