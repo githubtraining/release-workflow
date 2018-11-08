@@ -228,7 +228,7 @@ steps:
         # TODO: release drafter should be merged into this PR so the learner sees it
 
   #10 - The user approves the branch merge into master
-  - title: Cut the release
+  - title: Create the release
     description: Merge the release branch.
     event: pull_request.closed
     link: '{{ repoUrl }}/pull/4'
@@ -309,7 +309,6 @@ steps:
     event: pull_request_review.submitted
     link: '{{ repoURL }}/pull/8'
     actions:
-      # TODO: rewrite 08.2 so that it shows we will merge into the release branch next
     - type: respond
       with: 12.2_hotfix-merged-into-release.md
       # TODO: remove these unused files
