@@ -197,7 +197,6 @@ steps:
     link: '{{ repoUrl }}/pull/7'
     actions:
       # TODO: request a review from the learner
-      # TODO: adjust comment on PR #7 pointing to PR #8
     - type: mergePullRequest
     - type: octokit
       method: gitdata.deleteReference
