@@ -44,9 +44,14 @@ steps:
     event: project.created
     link: '{{ repoUrl }}/issues/2'
     actions:
+    - type: createIssue
+      title: Creating a release branch
+      body: 03.1_release-branches.md
+      action_id: branchPrompt
     - type: respond
       issue: Organizing a release
       with: 02.1_move-a-card.md
+
 
   #3 - The user should add a card to the project board
   - title: Sorting issues
@@ -54,10 +59,7 @@ steps:
     event: project_card.created
     link: '{{ repoUrl }}/issues/2'
     actions:
-      - type: createIssue
-        title: Creating a release branch
-        body: 03.1_release-branches.md
-        action_id: branchPrompt
+
     # TODO: Add branch validation
       - type: respond
         with: 03.2_projects-success.md
