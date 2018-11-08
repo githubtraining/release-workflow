@@ -191,6 +191,8 @@ steps:
         with: 07.1_successful-open.md
         data:
           url: '{{ repoUrl }}/pull/8'
+      - type: closeIssue
+        issue: Create a release pull request
 
   #8 - Bot creates a PR against release, learner approves, bot merges
   - title: Approve ships for an upcoming release
