@@ -49,20 +49,10 @@ steps:
     actions:
     - type: respond
       issue: Organizing a release
-      with: 01.2_project-column.md
-
-  #3 - The user should create a project column
-  - title: Adding columns
-    description: Create a project column.
-    event: project_column.created
-    link: '{{ repoUrl }}/issues/2'
-    actions:
-    - type: respond
-      issue: Organizing a release
       with: 01.3_move-a-card.md
 
   #4 - The user should add a card to the project board
-  - title: Triaging issues
+  - title: Sorting issues
     description: Add an issue to a project column.
     event: project_card.created
     link: '{{ repoUrl }}/issues/2'
@@ -304,9 +294,9 @@ steps:
     actions:
       # TODO: rewrite 08.2 so that it shows we will merge into the release branch next
     - type: respond
-      with: 08.2_hotfix-merged-into-release.md    
+      with: 08.2_hotfix-merged-into-release.md
       # TODO: remove these unused files
-      # BODY: 04.2early-close.md, 
+      # BODY: 04.2early-close.md,
 
   #14 - Hotfix is reverse merged into the release branch
   - title: Update master
