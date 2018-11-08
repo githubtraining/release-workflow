@@ -186,7 +186,7 @@ steps:
       - type: respond
         with: 07.3_successful-open.md
         data:
-          url: '{{ repoUrl }}/pull/8'
+          url: '8'
       - type: closeIssue
         issue: Create a release pull request
 
