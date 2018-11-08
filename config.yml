@@ -63,7 +63,7 @@ steps:
         with: 03.2_projects-success.md
         issue: Organizing a release
         data:
-          url: '{{ repoUrl }}/issues/3'
+          url: '%actions.branchPrompt.data.html_url%'
       - type: closeIssue
         issue: Organizing a release
 
