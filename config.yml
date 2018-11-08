@@ -154,6 +154,8 @@ steps:
       # We re-enable branch protection on the release branch
       - type: updateBranchProtection
         branch: release-v1.0
+      - type: closeIssue
+        issue: Adding a feature
 
   #7 - The user opens a pull request from the release branch into master
   - title: Open a release pull request
