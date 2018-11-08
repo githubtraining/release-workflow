@@ -268,7 +268,7 @@ steps:
         title: Accidental bugs
         body: 08.1_hotfix-intro.md
         head: bug-fix
-        base: release-v1.0
+        base: master
         action_id: newPullRequest
       - type: octokit
         method: issues.addAssigneesToIssue
@@ -292,34 +292,23 @@ steps:
           1. Click **Apply suggestion**
           2. Enter a commit message
           3. Click **Commit changes**
-          4. Merge this pull request.
+          4. Approve this pull request.
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
 
   #13 - User resolves the bug, then merges the pull request.
   - title: Resolve and merge
     description: Resolve the bug, then merge the fix into the release branch
-    event: pull_request.closed
+    event: pull_request_review.submitted
     link: '{{ repoURL }}/pull/8'
     actions:
-    - type: gate
-      left: '%payload.pull_request.merged%'
-      # If the pull request was closed with unmerged commits...
-      else:
-        # We reopen the pull request
-        - type: octokit
-          method: issues.edit
-          state: open
-          owner: '%payload.repository.owner.login%'
-          repo: '%payload.repository.name%'
-          number: '%payload.repository.pull_request.number%'
-        # We comment and let them know that they should merge
-        - type: respond
-          with: 04.2early-close.md
+      # TODO: rewrite 08.2 so that it shows we will merge into the release branch next
     - type: respond
-      with: 08.2_hotfix-merged-into-release.md
+      with: 08.2_hotfix-merged-into-release.md    
+      # TODO: remove these unused files
+      # BODY: 04.2early-close.md, 
 
-  #14 - User creates a new PR, then merges into master
+  #14 - Hotfix is reverse merged into the release branch
   - title: Update master
     description: Merge your release branch changes into master
     event: pull_request.closed
@@ -340,6 +329,9 @@ steps:
         - type: respond
           with: 04.2early-close.md
           issue: '%payload.repository.pull_request.number%'
+    - type: mergeBranch
+      head: release-v1.0
+      # TODO: check if this response needs to be updated as a result of the reverse merge
     - type: respond
       with: 09.1_last-release.md
 
