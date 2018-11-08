@@ -190,13 +190,12 @@ steps:
       - type: closeIssue
         issue: Create a release pull request
 
-  #8 - Bot creates a PR against release, learner approves, bot merges
+  #8 - Bot creates a PR against release, learner approves
   - title: Approve ships for an upcoming release
     description: Approve ships for an upcoming release
     event: pull_request_review.submitted
     link: '{{ repoUrl }}/pull/7'
     actions:
-      # TODO: request a review from the learner
     - type: mergePullRequest
     - type: octokit
       method: gitdata.deleteReference
@@ -211,6 +210,8 @@ steps:
       issue: More features for the next release
       data:
         url: '{{ repoUrl }}/pull/7'
+    - type: requestReviewFromRegistrant
+      pullRequest: More features for the next release
 
   #9 - The user assigns themselves to the pull request
   - title: Automation and assignment
