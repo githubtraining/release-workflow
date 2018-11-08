@@ -80,6 +80,8 @@ steps:
         title: Adding a feature
         body: 04.1_update-readme.md
         action_id: addFeature
+        data:
+          username: '%user.username%'
       - type: respond
         issue: Creating a release branch
         with: 04.2_branch-success.md
