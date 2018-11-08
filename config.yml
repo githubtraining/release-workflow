@@ -59,8 +59,6 @@ steps:
     event: project_card.created
     link: '{{ repoUrl }}/issues/2'
     actions:
-
-    # TODO: Add branch validation
       - type: respond
         with: 03.2_projects-success.md
         issue: Organizing a release
