@@ -44,9 +44,14 @@ steps:
     event: project.created
     link: '{{ repoUrl }}/issues/2'
     actions:
+    - type: createIssue
+      title: Creating a release branch
+      body: 03.1_release-branches.md
+      action_id: branchPrompt
     - type: respond
       issue: Organizing a release
       with: 02.1_move-a-card.md
+
 
   #3 - The user should add a card to the project board
   - title: Sorting issues
@@ -54,11 +59,6 @@ steps:
     event: project_card.created
     link: '{{ repoUrl }}/issues/2'
     actions:
-      - type: createIssue
-        title: Creating a release branch
-        body: 03.1_release-branches.md
-        action_id: branchPrompt
-    # TODO: Add branch validation
       - type: respond
         with: 03.2_projects-success.md
         issue: Organizing a release
@@ -80,6 +80,8 @@ steps:
         title: Adding a feature
         body: 04.1_update-readme.md
         action_id: addFeature
+        data:
+          username: '%user.username%'
       - type: respond
         issue: Creating a release branch
         with: 04.2_branch-success.md
@@ -165,7 +167,7 @@ steps:
           - left: '%payload.pull_request.base.ref%'
             operator: ===
             right: master
-          - left: '%payload.pull_request.base.ref%'
+          - left: '%payload.pull_request.head.ref%'
             operator: ===
             right: release-v1.0
         # If they do not have the correct base and compare fields...
@@ -186,15 +188,17 @@ steps:
       - type: respond
         with: 07.3_successful-open.md
         data:
-          url: '{{ repoUrl }}/pull/8'
+          url: '8'
       - type: closeIssue
         issue: Create a release pull request
+      - type: requestReviewFromRegistrant
+        pullRequest: More features for the next release
 
   #8 - Bot creates a PR against release, learner approves
   - title: Approve ships for an upcoming release
     description: Approve ships for an upcoming release
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/7'
+    link: '{{ repoUrl }}/pull/8'
     actions:
     - type: mergePullRequest
     - type: octokit
@@ -207,11 +211,9 @@ steps:
       issue: 7
     - type: respond
       with: 08.1_back-to-release.md
-      issue: More features for the next release
+      issue: 8
       data:
         url: '{{ repoUrl }}/pull/7'
-    - type: requestReviewFromRegistrant
-      pullRequest: More features for the next release
 
   #9 - The user assigns themselves to the pull request
   - title: Automation and assignment
