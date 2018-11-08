@@ -45,9 +45,11 @@ steps:
     link: '{{ repoUrl }}/issues/2'
     actions:
     - type: createIssue
-      title: Creating a release branch
-      body: 03.1_release-branches.md
-      action_id: branchPrompt
+      title: Adding a feature
+      body: 04.1_update-readme.md
+      action_id: addFeature
+      data:
+        username: '%user.username%'
     - type: respond
       issue: Organizing a release
       with: 02.1_move-a-card.md
@@ -63,40 +65,20 @@ steps:
         with: 03.2_projects-success.md
         issue: Organizing a release
         data:
-          url: '{{ repoUrl }}/issues/3'
+          url: '%actions.addFeature.data.html_url%'
       - type: closeIssue
         issue: Organizing a release
 
-  #4 - The user should create a release branch
-  - title: Branching strategies
-    description: Create a release branch.
-    event: create
-    link: '{{ repoUrl }}/issues/3'
-    actions:
-      - type: updateBranchProtection
-        branch: release-v1.0
-      # creating a third issue for the user, asking them to go through the GitHub flow to make a change
-      - type: createIssue
-        title: Adding a feature
-        body: 04.1_update-readme.md
-        action_id: addFeature
-        data:
-          username: '%user.username%'
-      - type: respond
-        issue: Creating a release branch
-        with: 04.2_branch-success.md
-        data:
-          url: '%actions.addFeature.data.html_url%'
-      - type: closeIssue
-        issue: Creating a release branch
 
-  #5 - User creates a branch making a change and opens a pull request against `base: release-v1.0`
+  #4 - User makes a change and opens a pull request against `base: release-v1.0`
   - title: Adding a feature
-    description: Create a branch, update the README.md, and open a pull request.
+    description: Update the README.md and open a pull request.
     event: pull_request.opened
     link: '{{ repoUrl }}/issues/3'
     actions:
       # We make sure that the user's pull request has the base set to `release-v1.0`
+      - type: updateBranchProtection
+        branch: release-v1.0
       - type: gate
         left: '%payload.pull_request.base.ref%'
         operator: ===
@@ -118,7 +100,7 @@ steps:
         body: 05.2_approval.md
         event: APPROVE
 
-  #6 - The user merges their pull request into the release branch
+  #5 - The user merges their pull request into the release branch
   - title: Merge the pull request
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
@@ -155,7 +137,7 @@ steps:
       - type: closeIssue
         issue: Adding a feature
 
-  #7 - The user opens a pull request from the release branch into master
+  #6 - The user opens a pull request from the release branch into master
   - title: Open a release pull request
     description: Create the release pull request with base as master, and compare as the release branch.
     event: pull_request.opened
@@ -194,7 +176,7 @@ steps:
       - type: requestReviewFromRegistrant
         pullRequest: More features for the next release
 
-  #8 - Bot creates a PR against release, learner approves
+  #7 - Bot creates a PR against release, learner approves
   - title: Approve ships for an upcoming release
     description: Approve ships for an upcoming release
     event: pull_request_review.submitted
@@ -215,7 +197,7 @@ steps:
       data:
         url: '{{ repoUrl }}/pull/7'
 
-  #9 - The user assigns themselves to the pull request
+  #8 - The user assigns themselves to the pull request
   - title: Automation and assignment
     description: Install the GitHub app to help with release notes, then assign yourself to the pull request.
     event: pull_request.assigned
@@ -225,7 +207,7 @@ steps:
         body: 09.1_response.md
         event: APPROVE
 
-  #10 - The user approves the branch merge into master
+  #9 - The user approves the branch merge into master
   - title: Create the release
     description: Merge the release branch.
     event: pull_request.closed
@@ -257,7 +239,7 @@ steps:
         data:
           url: '%actions.finalIssue.data.html_url%'
 
-  #11 - User creates a release from the draft
+  #10 - User creates a release from the draft
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
@@ -301,7 +283,7 @@ steps:
         data:
           url: '%actions.newPullRequest.data.html_url%'
 
-  #12 - User resolves the bug, then merges the pull request.
+  #11 - User resolves the bug, then merges the pull request.
   - title: Resolve and merge
     description: Resolve the bug, then merge the fix into the release branch
     event: pull_request_review.submitted
@@ -310,7 +292,7 @@ steps:
     - type: respond
       with: 12.1_hotfix-merged-into-release.md
 
-  #13 - Hotfix is reverse merged into the release branch
+  #12 - Hotfix is reverse merged into the release branch
   - title: Update master
     description: Merge your release branch changes into master
     event: pull_request.closed
@@ -337,7 +319,7 @@ steps:
     - type: respond
       with: 13.1_last-release.md
 
-  #14 - User creates hotfix release (and uses semantic versioning).
+  #13 - User creates hotfix release (and uses semantic versioning).
   - title: Finalize the hotfix release
     description: Complete the release by publishing the newest release
     event: release.published
