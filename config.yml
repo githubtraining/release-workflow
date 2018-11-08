@@ -154,6 +154,8 @@ steps:
       # We re-enable branch protection on the release branch
       - type: updateBranchProtection
         branch: release-v1.0
+      - type: closeIssue
+        issue: Adding a feature
 
   #7 - The user opens a pull request from the release branch into master
   - title: Open a release pull request
@@ -189,6 +191,8 @@ steps:
         with: 07.1_successful-open.md
         data:
           url: '{{ repoUrl }}/pull/8'
+      - type: closeIssue
+        issue: Create a release pull request
 
   #8 - Bot creates a PR against release, learner approves, bot merges
   - title: Approve ships for an upcoming release
