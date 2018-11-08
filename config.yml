@@ -80,14 +80,14 @@ steps:
         branch: release-v1.0
       # creating a third issue for the user, asking them to go through the GitHub flow to make a change
       - type: createIssue
-        title: Please fix this bug
+        title: Adding a feature
         body: 04.1_update-readme.md
-        action_id: fixbugIssue
+        action_id: addFeature
       - type: respond
         issue: Creating a release branch
         with: 04.2_branch-success.md
         data:
-          url: '%actions.fixbugIssue.data.html_url%'
+          url: '%actions.addFeature.data.html_url%'
       - type: closeIssue
         issue: Creating a release branch
 
