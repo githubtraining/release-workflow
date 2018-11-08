@@ -292,7 +292,7 @@ steps:
           1. Click **Apply suggestion**
           2. Enter a commit message
           3. Click **Commit changes**
-          4. Merge this pull request.
+          4. Approve this pull request.
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
 
@@ -302,10 +302,6 @@ steps:
     event: pull_request.synchronize
     link: '{{ repoURL }}/pull/8'
     actions:
-      # TODO: create a response file for this.
-    - type: createReview
-      body: 13.1_merge.md
-      event: APPROVE
       # TODO: rewrite 08.2 so that it shows we will merge into the release branch next
     - type: respond
       with: 08.2_hotfix-merged-into-release.md    
