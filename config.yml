@@ -194,7 +194,7 @@ steps:
   - title: Approve ships for an upcoming release
     description: Approve ships for an upcoming release
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/7'
+    link: '{{ repoUrl }}/pull/8'
     actions:
     - type: mergePullRequest
     - type: octokit
