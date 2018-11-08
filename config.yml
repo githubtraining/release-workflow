@@ -67,6 +67,8 @@ steps:
         issue: Organizing a release
         data:
           url: '%actions.branchPrompt.data.html_url%'
+      - type: closeIssue
+        issue: Organizing a release
 
   #4 - The user should create a release branch
   - title: Branching strategies
