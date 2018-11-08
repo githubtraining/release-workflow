@@ -304,7 +304,7 @@ steps:
     actions:
       # TODO: create a response file for this.
     - type: createReview
-      body: Thanks for the commit, go ahead and merge!
+      body: 13.1_merge.md
       event: APPROVE
       # TODO: rewrite 08.2 so that it shows we will merge into the release branch next
     - type: respond
