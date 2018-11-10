@@ -46,12 +46,6 @@ steps:
     event: project.created
     link: '{{ repoUrl }}/issues/2'
     actions:
-    - type: createIssue
-      title: Adding a feature
-      body: 04.1_update-readme.md
-      action_id: addFeature
-      data:
-        username: '%user.username%'
     - type: respond
       issue: Organizing a release
       with: 02.1_move-a-card.md
@@ -63,6 +57,12 @@ steps:
     event: project_card.created
     link: '{{ repoUrl }}/issues/2'
     actions:
+      - type: createIssue
+        title: Adding a feature
+        body: 04.1_update-readme.md
+        action_id: addFeature
+        data:
+          username: '%user.username%'
       - type: respond
         with: 03.2_projects-success.md
         issue: Organizing a release
