@@ -300,6 +300,9 @@ steps:
         issue: Finalize the release
         data:
           url: '%actions.newPullRequest.data.html_url%'
+      - type: closeIssue
+        issue: Finalize the release 
+      
 
   #12 - User resolves the bug, then approves the pull request and it is merged into master
   - title: Submit a hotfix
@@ -338,4 +341,4 @@ steps:
     actions:
       - type: createIssue
         title: Contratulations
-        body: 14.1_congratulations.md
+        body: 15.1_congratulations.md
