@@ -316,9 +316,11 @@ steps:
       body: 13.2_backport.md
       head: bug-fix
       base: release-v1.0
-      # TODO: check if this response needs to be updated as a result of the reverse merge
+      action_id: backportPR
     - type: respond
       with: 12.1_fix-merged.md
+      data:
+        url: '%actions.backportPR.data.html_url%'
 
   #13 - Hotfix is reverse merged into the release branch
   - title: Backport the hotfix
@@ -327,11 +329,14 @@ steps:
     link: '{{ repoURL }}/pull/9'
     actions:
     - type: mergePullRequest
-    - type: respond
-      with: 14.1_backport-shipped.md
     - type: createIssue
       title: Create a patch release
       body: 14.2_last-release.md
+      action_id: patchIssue
+    - type: respond
+      with: 14.1_backport-shipped.md
+      data:
+        url: '%actions.patchIssue.data.html_url%'
 
   #14 - Backport the hotfix into existing release
   - title: Release v1.0.1
