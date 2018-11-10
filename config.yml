@@ -320,7 +320,7 @@ steps:
   #13 - Hotfix is reverse merged into the release branch
   - title: Backport the hotfix
     description: Apply the patch commits to the release branch
-    event: pull_request.submitted
+    event: pull_request_review.submitted
     link: '{{ repoURL }}/pull/9'
     actions:
     - type: mergePullRequest
