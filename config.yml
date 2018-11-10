@@ -168,7 +168,7 @@ steps:
       - type: respond
         with: 07.3_successful-open.md
         data:
-          url: '8'
+          url: '7'
       - type: closeIssue
         issue: Create a release pull request
       - type: requestReviewFromRegistrant
@@ -188,10 +188,10 @@ steps:
       ref: heads/green-colors
     - type: respond
       with: 08.2_github-app.md
-      issue: 7
+      issue: 6
     - type: respond
       with: 08.1_back-to-release.md
-      issue: 8
+      issue: 7
       data:
         url: '{{ repoUrl }}/pull/7'
 
