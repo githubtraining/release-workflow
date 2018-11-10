@@ -92,9 +92,6 @@ steps:
           # and we close the pull request, unmerged
           - type: closeIssue
             issue: '%payload.pull_request.number%'
-      # If the user does everything right, we remove protections on the release branch so they can merge
-      - type: removeBranchProtection
-        branch: release-v1.0
       # We approve their pull request
       - type: createReview
         body: 05.2_approval.md
@@ -193,7 +190,7 @@ steps:
       with: 08.1_back-to-release.md
       issue: 7
       data:
-        url: '{{ repoUrl }}/pull/7'
+        url: '6'
 
   #8 - The user assigns themselves to the pull request
   - title: Automation and assignment
