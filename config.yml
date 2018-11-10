@@ -250,6 +250,8 @@ steps:
       - type: createIssue
         title: Finalize the release
         body: 10.1_finalize-release.md
+        data:
+          releases: '{{ repoUrl }}/releases'
         action_id: finalIssue
      # We comment in the merged pull request, pointing users to final instructions
       - type: respond
@@ -332,6 +334,8 @@ steps:
     - type: createIssue
       title: Create a patch release
       body: 14.2_last-release.md
+      data:
+        releases: '{{ repoUrl }}/releases'
       action_id: patchIssue
     - type: respond
       with: 14.1_backport-shipped.md
