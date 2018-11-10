@@ -302,8 +302,8 @@ steps:
           url: '%actions.newPullRequest.data.html_url%'
 
   #12 - User resolves the bug, then merges the pull request.
-  - title: Resolve and merge
-    description: Resolve the bug, then merge the fix into the release branch
+  - title: Submit a hotfix
+    description: Resolve the bug, then merge the fix into the master branch
     event: pull_request_review.submitted
     link: '{{ repoURL }}/pull/8'
     actions:
@@ -311,8 +311,8 @@ steps:
       with: 12.1_hotfix-merged-into-release.md
 
   #13 - Hotfix is reverse merged into the release branch
-  - title: Update master
-    description: Merge your release branch changes into master
+  - title: Backport the hotfix
+    description: Merge your master branch into the release branch
     event: pull_request.closed
     link: '{{ repoURL }}/pull/9'
     actions:
@@ -331,11 +331,26 @@ steps:
         - type: respond
           with: 06.2_early-close.md
           issue: '%payload.repository.pull_request.number%'
-    - type: mergeBranch
-      head: release-v1.0
+    - type: createPullRequest
+      title: Backport the hotfix
+      body: 13.2_backport.md
+      head: bug-fix
+      base: release-v1.0
       # TODO: check if this response needs to be updated as a result of the reverse merge
     - type: respond
-      with: 13.1_last-release.md
+      with: 13.1_fix-merged.md
+
+  #14 - Backport the hotfix into existing release
+  - title: Release v1.0.1
+    description: Create a release based on the most recent commit on the release branch
+    event: pull_request_review.submitted
+    actions:
+    - type: mergePullRequest
+    - type: respond
+      with: 14.1_backport-shipped.md
+    - type: createIssue
+      title: Create a patch release
+      body: 14.2_last-release.md
 
   #14 - User creates hotfix release (and uses semantic versioning).
   - title: Finalize the hotfix release
