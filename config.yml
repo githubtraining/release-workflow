@@ -342,3 +342,5 @@ steps:
       - type: createIssue
         title: Contratulations
         body: 15.1_congratulations.md
+      - type: closeIssue
+        issue: Create a patch release
