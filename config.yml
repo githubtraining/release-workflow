@@ -9,6 +9,8 @@ template:
 before:
   # enable branch protection
   - type: updateBranchProtection
+  - type: updateBranchProtection
+    branch: release-v1.0
   # creating a welcome issue that will have the user's first instructions
   - type: createIssue
     title: Welcome
@@ -23,8 +25,6 @@ steps:
     link: '{{ repoUrl }}/issues/1'
     actions:
       # creates an issue with the next instructions about project boards
-      - type: updateBranchProtection
-        branch: release-v1.0
       - type: createIssue
         title: Organizing a release
         body: 01.1_project-board.md
@@ -132,8 +132,6 @@ steps:
         data:
           url: '%actions.releaseIssue.data.html_url%'
       # We re-enable branch protection on the release branch
-      - type: updateBranchProtection
-        branch: release-v1.0
       - type: closeIssue
         issue: Adding a feature
 
