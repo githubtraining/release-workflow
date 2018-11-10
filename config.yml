@@ -315,7 +315,7 @@ steps:
       base: release-v1.0
       # TODO: check if this response needs to be updated as a result of the reverse merge
     - type: respond
-      with: 13.1_fix-merged.md
+      with: 12.1_fix-merged.md
 
   #13 - Hotfix is reverse merged into the release branch
   - title: Backport the hotfix
