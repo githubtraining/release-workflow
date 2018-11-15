@@ -59,6 +59,9 @@ steps:
     event: project_card.created
     link: '{{ repoUrl }}/issues/2'
     actions:
+      # check if the project card is an issue (if not, it's one of the automated cards)
+      - type: gate
+        left: '%payload.project_card.content_url%'
       - type: createIssue
         title: Adding a feature
         body: 04.1_update-readme.md
