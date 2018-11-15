@@ -288,7 +288,7 @@ steps:
         issue: Finalize the release 
       
 
-  #12 - User resolves the bug, then approves the pull request and it is merged into master
+  #11 - User resolves the bug, then approves the pull request and it is merged into master
   - title: Submit a hotfix
     description: Resolve the bug, then merge the fix into the master branch
     event: pull_request_review.submitted
@@ -306,7 +306,7 @@ steps:
       data:
         url: '%actions.backportPR.data.html_url%'
 
-  #13 - Hotfix is reverse merged into the release branch
+  #12 - Hotfix is reverse merged into the release branch
   - title: Backport the hotfix
     description: Apply the patch commits to the release branch
     event: pull_request_review.submitted
@@ -324,7 +324,7 @@ steps:
       data:
         url: '%actions.patchIssue.data.html_url%'
 
-  #14 - Backport the hotfix into existing release
+  #13 - Backport the hotfix into existing release
   - title: Release v1.0.1
     description: Create a release based on the most recent commit on the release branch
     event: release.published
