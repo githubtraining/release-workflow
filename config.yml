@@ -170,7 +170,7 @@ steps:
       - type: respond
         with: 07.3_successful-open.md
         data:
-          url: '7'
+          url: '%actions.morefeaturesPR.data.html_url%'
       - type: closeIssue
         issue: Create a release pull request
       - type: requestReviewFromRegistrant
@@ -193,7 +193,6 @@ steps:
       issue: 6
     - type: respond
       with: 08.1_back-to-release.md
-      issue: 7
       data:
         url: '6'
 
@@ -333,5 +332,11 @@ steps:
       - type: createIssue
         title: Contratulations
         body: 15.1_congratulations.md
+        action_id: lastIssue
+      - type: respond
+        with: 14.3_point-to-last.md
+        issue: Create a patch release
+        data:
+          url: '%actions.lastIssue.data.html_url%'
       - type: closeIssue
         issue: Create a patch release
