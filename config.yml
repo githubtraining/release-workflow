@@ -332,5 +332,11 @@ steps:
       - type: createIssue
         title: Contratulations
         body: 15.1_congratulations.md
+        action_id: lastIssue
+      - type: respond
+        with: 14.3_point-to-last.md
+        issue: Create a patch release
+        data:
+          url: '%actions.lastIssue.data.html_url%'
       - type: closeIssue
         issue: Create a patch release
