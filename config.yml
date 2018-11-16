@@ -193,7 +193,6 @@ steps:
       issue: 6
     - type: respond
       with: 08.1_back-to-release.md
-      issue: 7
       data:
         url: '6'
 
