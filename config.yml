@@ -170,7 +170,7 @@ steps:
       - type: respond
         with: 07.3_successful-open.md
         data:
-          url: '7'
+          url: '%actions.morefeaturesPR.data.html_url%'
       - type: closeIssue
         issue: Create a release pull request
       - type: requestReviewFromRegistrant
