@@ -69,7 +69,7 @@ steps:
         data:
           username: '%user.username%'
       - type: respond
-        with: 03.2_projects-success.md
+        with: 02.2_automation.md
         issue: Organizing a release
         data:
           url: '%actions.addFeature.data.html_url%'
