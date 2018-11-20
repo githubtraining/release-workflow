@@ -202,7 +202,7 @@ steps:
     event: pull_request.synchronize
     link: '{{ repoURL }}/pull/7'
     actions:
-      - type: oktokit
+      - type: octokit
         method: pullRequests.getFiles
         owner: '%payload.repository.owner.login%'
         repo: '%payload.repository.name%'
