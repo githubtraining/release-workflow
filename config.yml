@@ -331,7 +331,7 @@ steps:
     # link: '%actions.finalIssue.data.html_url%'
     actions:
       - type: createIssue
-        title: Contratulations
+        title: Congratulations
         body: 15.1_congratulations.md
         action_id: lastIssue
       - type: respond
