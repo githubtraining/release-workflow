@@ -278,15 +278,13 @@ steps:
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
       - type: respond
-        with: 11.1.1_approve-pr.md  
-      - type: respond
         with: 11.2_next-bug.md
         issue: Finalize the release
         data:
           url: '%actions.newPullRequest.data.html_url%'
       - type: closeIssue
-        issue: Finalize the release 
-      
+        issue: Finalize the release
+
 
   #11 - User resolves the bug, then approves the pull request and it is merged into master
   - title: Submit a hotfix
