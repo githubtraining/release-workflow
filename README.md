@@ -4,6 +4,7 @@ In this course, learn how releases are GitHub's way of packaging and providing s
 
 After completing this couse, you will be able to:
 
+
 - create a release on GitHub based on a Git tag
 - build a project board within your repository to manage your release
 - create and commit changes on a release branch
