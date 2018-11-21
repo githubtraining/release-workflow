@@ -69,7 +69,7 @@ steps:
         data:
           username: '%user.username%'
       - type: respond
-        with: 03.2_projects-success.md
+        with: 02.2_automation.md
         issue: Organizing a release
         data:
           url: '%actions.addFeature.data.html_url%'
@@ -196,12 +196,25 @@ steps:
       data:
         url: '6'
 
-  #8 - The user assigns themselves to the pull request
-  - title: Automation and assignment
-    description: Install the GitHub app to help with release notes, then assign yourself to the pull request.
-    event: pull_request.assigned
+  #8 - Install the GitHub app and then populate the release-drafter.yml file
+  - title: GitHub app and configuration template
+    description: Install the GitHub app to help with release notes, then populate the `release-drafter.yml` file
+    event: pull_request.synchronize
     link: '{{ repoURL }}/pull/7'
     actions:
+      - type: octokit
+        method: pullRequests.getFiles
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        number: '%payload.pull_request.number%'
+        action_id: pr_file
+      - type: gate
+        left: '%actions.pr_file.data%'
+        operator: includes
+        right: 'filename:.github/release-drafter.yml'
+        else:
+          - type: respond
+            with: 08.3_config-validation.md
       - type: createReview
         body: 09.1_response.md
         event: APPROVE
@@ -244,7 +257,7 @@ steps:
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
-    link: '{{ repoURL }}/pull/10'
+    link: '{{ repoUrl }}/pull/10'
     actions:
     ## Create a new PR for the hotfix
       - type: createPullRequest
@@ -275,7 +288,6 @@ steps:
           1. Click **Commit suggestion**
           2. Enter a commit message
           3. Click **Commit changes**
-          4. Approve this pull request.
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
       - type: respond
@@ -284,14 +296,14 @@ steps:
         data:
           url: '%actions.newPullRequest.data.html_url%'
       - type: closeIssue
-        issue: Finalize the release 
-      
+        issue: Finalize the release
+
 
   #11 - User resolves the bug, then approves the pull request and it is merged into master
   - title: Submit a hotfix
     description: Resolve the bug, then merge the fix into the master branch
     event: pull_request_review.submitted
-    link: '{{ repoURL }}/pull/8'
+    link: '{{ repoUrl }}/pull/8'
     actions:
     - type: mergePullRequest
     - type: createPullRequest
@@ -309,7 +321,7 @@ steps:
   - title: Backport the hotfix
     description: Apply the patch commits to the release branch
     event: pull_request_review.submitted
-    link: '{{ repoURL }}/pull/9'
+    link: '{{ repoUrl }}/pull/9'
     actions:
     - type: mergePullRequest
     - type: createIssue
@@ -330,7 +342,7 @@ steps:
     # link: '%actions.finalIssue.data.html_url%'
     actions:
       - type: createIssue
-        title: Contratulations
+        title: Congratulations
         body: 15.1_congratulations.md
         action_id: lastIssue
       - type: respond
