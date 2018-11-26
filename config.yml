@@ -257,7 +257,7 @@ steps:
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
-    link: '{{ repoUrl }}/pull/10'
+    link: '{{ repoUrl }}/issues/8'
     actions:
     ## Create a new PR for the hotfix
       - type: createPullRequest
