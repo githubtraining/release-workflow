@@ -339,7 +339,7 @@ steps:
   - title: Release v1.0.1
     description: Create a release based on the most recent commit on the release branch
     event: release.published
-    # link: '%actions.finalIssue.data.html_url%'
+    link: '{{ repoUrl }}/issues/11'
     actions:
       - type: createIssue
         title: Congratulations
