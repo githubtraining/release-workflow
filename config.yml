@@ -321,7 +321,7 @@ steps:
   - title: Backport the hotfix
     description: Apply the patch commits to the release branch
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/9'
+    link: '{{ repoUrl }}/pull/10'
     actions:
     - type: mergePullRequest
     - type: createIssue
