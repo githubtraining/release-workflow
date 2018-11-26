@@ -200,7 +200,7 @@ steps:
   - title: GitHub app and configuration template
     description: Install the GitHub app to help with release notes, then populate the `release-drafter.yml` file
     event: pull_request.synchronize
-    link: '{{ repoURL }}/pull/7'
+    link: '{{ repoUrl }}/pull/6'
     actions:
       - type: octokit
         method: pullRequests.getFiles
