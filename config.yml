@@ -295,13 +295,11 @@ steps:
         commit_id: '%actions.newPullRequest.data.head.sha%'
         path: game.js
         body: |
+          How's this change? 
+
           ```suggestion
               starCtx.fillStyle = "#000";
           ```
-          ### :keyboard: Activity: Apply the suggestion
-          1. Click **Commit suggestion**
-          2. Enter a commit message
-          3. Click **Commit changes**
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
       - type: respond
@@ -311,6 +309,9 @@ steps:
           url: '%actions.newPullRequest.data.html_url%'
       - type: closeIssue
         issue: Finalize the release
+      - type: respond
+        with: suggest-changes.md
+        issue: Accidental bugs
 
 
   #12 - User resolves the bug, then approves the pull request and it is merged into master
