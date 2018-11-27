@@ -188,6 +188,7 @@ steps:
       owner: '%payload.repository.owner.login%'
       repo: '%payload.repository.name%'
       ref: heads/green-colors
+      # TODO: change these instructions to indicate the need for a new PR with release drafter config
     - type: respond
       with: 08.2_github-app.md
       issue: 6
@@ -287,6 +288,7 @@ steps:
         number: '%actions.newPullRequest.data.number%'
         assignees: '%payload.repository.owner.login%'
       ## Suggest a change in the new PR
+      # TODO: request a review from the learner
       - type: octokit
         method: pullRequests.createComment
         owner: '%payload.repository.owner.login%'
