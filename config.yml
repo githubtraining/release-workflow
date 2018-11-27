@@ -215,8 +215,9 @@ steps:
         else:
           - type: respond
             with: 08.3_config-validation.md
-      - type: respond
-        with: mergedconfig.md
+      - type: createReview
+        body: mergedconfig.md
+        event: APPROVE
 
   #9 - Merge the release drafter configuration
   - title: Merge the config for release drafter
