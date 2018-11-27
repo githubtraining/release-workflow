@@ -222,9 +222,11 @@ steps:
   #9 - Merge the release drafter configuration
   - title: Merge the config for release drafter
     description: Merge the configuration file for release drafter, which sets a template for the release.
-    event: pull_request.merged
+    event: pull_request.closed
     link: '{{ repoUrl }}/pull/8'
     actions:
+      - type: respond
+        with: gotoreleasepr.md
       - type: createReview
         body: 09.1_response.md
         event: APPROVE
