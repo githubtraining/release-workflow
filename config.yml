@@ -219,12 +219,6 @@ steps:
     event: pull_request.opened
     link: '{{ repoUrl }}/pull/6'
     actions:
-      - type: octokit
-        method: pullRequests.getFiles
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
-        number: '%payload.pull_request.number%'
-        action_id: pr_file
       # We check that the pull request has the correct "base" and "compare"
       - type: gate
         gates:
@@ -234,9 +228,16 @@ steps:
           - left: '%payload.pull_request.head.ref%'
             operator: ===
             right: config-release-drafter
+        every: true
         else: 
           - type: respond
             with: 08.4_wrong-base.md
+      - type: octokit
+        method: pullRequests.getFiles
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        number: '%payload.pull_request.number%'
+        action_id: pr_file
       - type: gate
         left: '%actions.pr_file.data%'
         operator: includes
