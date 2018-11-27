@@ -94,6 +94,7 @@ steps:
           - type: respond
             with: 05.1_wrong-base.md
             issue: '%payload.pull_request.number%'
+          # TODO: reduce possible extra PRs by allowing learner to change the base instead of closing PR
           # and we close the pull request, unmerged
           - type: closeIssue
             issue: '%payload.pull_request.number%'
@@ -161,6 +162,7 @@ steps:
           - type: closeIssue
       # If they did everything right, we create a new pull request going into the release branch.
       # Currently the change is very minor, but it should make sense with the release.
+      # TODO: remove addition of release drafter config from `green-colors` PR, this is added at a later point
       - type: createPullRequest
         title: More features for the next release
         body: 07.1_new-pr.md
@@ -200,6 +202,7 @@ steps:
   #8 - Install the GitHub app and then populate the release-drafter.yml file
   - title: GitHub app and configuration template
     description: Install the GitHub app to help with release notes, then populate the `release-drafter.yml` file
+    # TODO: check that this PR is against the relase branch
     event: pull_request.opened
     link: '{{ repoUrl }}/pull/6'
     actions:
@@ -311,20 +314,6 @@ steps:
           url: '%actions.newPullRequest.data.html_url%'
       - type: closeIssue
         issue: Finalize the release
-      # - type: respond
-      #   with: suggest-changes.md
-      #   issue: Accidental bugs
-      - type: octokit
-        method: pullRequests.createComment
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
-        number: '%actions.newPullRequest.data.number%'
-        body: |
-          ### :keyboard: Activity: Apply the suggestion
-          1. Click **Commit suggestion**
-          2. Enter a commit message
-          3. Click **Commit changes**
-
 
   #12 - User resolves the bug, then approves the pull request and it is merged into master
   - title: Submit a hotfix
@@ -333,6 +322,7 @@ steps:
     link: '{{ repoUrl }}/pull/9'
     actions:
     - type: mergePullRequest
+    # TODO: request a review from the learner
     - type: createPullRequest
       title: Backport the hotfix
       body: 13.2_backport.md
