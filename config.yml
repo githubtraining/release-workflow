@@ -216,7 +216,6 @@ steps:
   #8 - Install the GitHub app and then populate the release-drafter.yml file
   - title: GitHub app and configuration template
     description: Install the GitHub app to help with release notes, then populate the `release-drafter.yml` file
-    # TODO: check that this PR is against the relase branch
     event: pull_request.opened
     link: '{{ repoUrl }}/pull/6'
     actions:
@@ -226,6 +225,18 @@ steps:
         repo: '%payload.repository.name%'
         number: '%payload.pull_request.number%'
         action_id: pr_file
+      # We check that the pull request has the correct "base" and "compare"
+      - type: gate
+        gates:
+          - left: '%payload.pull_request.base.ref%'
+            operator: ===
+            right: release-v1.0
+          - left: '%payload.pull_request.head.ref%'
+            operator: ===
+            right: config-release-drafter
+        else: 
+          - type: respond
+            with: 08.4_wrong-base.md
       - type: gate
         left: '%actions.pr_file.data%'
         operator: includes
