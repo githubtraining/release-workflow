@@ -18,6 +18,20 @@ before:
     data:
       releases: '%payload.repository.html_url%/releases'
 
+# Repo artifacts:
+# 1. Issue: Welcome
+# 2. Issue: Organizing a release
+# 3. Issue: Adding a feature
+# 4. PR: [title created by learner] — adding a feature PR
+# 5. Issue: Create a release pull request
+# 6. PR: [title created by learner] — release PR
+# 7. PR: More features for next release
+# 8. PR: [title created by learner] — release drafter PR
+# 9. Issue: Finalize the release
+# 10. PR: Accidental bugs
+# 11. PR: Backport the hotfix
+# 12. Issue: Create a patch release
+
 steps:
 
   #1 - ask the user to create a beta release from the most recent commit on master
@@ -275,7 +289,7 @@ steps:
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
-    link: '{{ repoUrl }}/issues/8'
+    link: '{{ repoUrl }}/issues/9'
     actions:
     ## Create a new PR for the hotfix
       - type: createPullRequest
@@ -319,7 +333,7 @@ steps:
   - title: Submit a hotfix
     description: Resolve the bug, then merge the fix into the master branch
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/9'
+    link: '{{ repoUrl }}/pull/10'
     actions:
     - type: mergePullRequest
     # TODO: request a review from the learner
@@ -338,7 +352,7 @@ steps:
   - title: Backport the hotfix
     description: Apply the patch commits to the release branch
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/10'
+    link: '{{ repoUrl }}/pull/11'
     actions:
     - type: mergePullRequest
     - type: createIssue
@@ -356,7 +370,7 @@ steps:
   - title: Release v1.0.1
     description: Create a release based on the most recent commit on the release branch
     event: release.published
-    link: '{{ repoUrl }}/issues/11'
+    link: '{{ repoUrl }}/issues/12'
     actions:
       - type: createIssue
         title: Congratulations
