@@ -209,7 +209,6 @@ steps:
       issue: 6
       data:
         prUrl: '%payload.repository.html_url%/compare/release-v1.0...config-release-drafter?expand=1'
-
     - type: respond
       with: 08.1_back-to-release.md
       data:
@@ -256,7 +255,7 @@ steps:
           - type: respond
             with: 08.3_config-validation.md
       - type: createReview
-        body: mergedconfig.md
+        body: 08.5_merge-the-config.md
         event: APPROVE
 
   #9 - Merge the release drafter configuration
@@ -266,7 +265,9 @@ steps:
     link: '{{ repoUrl }}/pull/8'
     actions:
       - type: respond
-        with: gotoreleasepr.md
+        with: 09.2_goto-release.md
+        data:
+          url: '6'
       - type: createReview
         body: 09.1_response.md
         event: APPROVE
