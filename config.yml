@@ -215,11 +215,20 @@ steps:
         else:
           - type: respond
             with: 08.3_config-validation.md
-      - type: mergePullRequest
+      - type: respond
+        with: mergedconfig.md
+
+  #9 - Merge the release drafter configuration
+  - title: Merge the config for release drafter
+    description: Merge the configuration file for release drafter, which sets a template for the release.
+    event: pull_request.merged
+    link: '{{ repoUrl }}/pull/8'
+    actions:
       - type: createReview
         body: 09.1_response.md
         event: APPROVE
         number: 6
+      
 
   #9 - The user approves the branch merge into master
   - title: Merge in the release
