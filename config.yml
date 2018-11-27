@@ -216,10 +216,18 @@ steps:
   #8 - Install the GitHub app and then populate the release-drafter.yml file
   - title: GitHub app and configuration template
     description: Install the GitHub app to help with release notes, then populate the `release-drafter.yml` file
-    event: pull_request.opened
+    event: pull_request
     link: '{{ repoUrl }}/pull/6'
     actions:
       # We check that the pull request has the correct "base" and "compare"
+      - type: gate
+        gates:
+        - left: '%payload.action%'
+          operator: ===
+          right: edited
+        - left: '%payload.action%'
+          operator: ===
+          right: opened
       - type: gate
         gates:
           - left: '%payload.pull_request.base.ref%'
