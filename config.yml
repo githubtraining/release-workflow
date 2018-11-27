@@ -311,9 +311,19 @@ steps:
           url: '%actions.newPullRequest.data.html_url%'
       - type: closeIssue
         issue: Finalize the release
-      - type: respond
-        with: suggest-changes.md
-        issue: Accidental bugs
+      # - type: respond
+      #   with: suggest-changes.md
+      #   issue: Accidental bugs
+      - type: octokit
+        method: pullRequests.createComment
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        number: '%actions.newPullRequest.data.number%'
+        body: |
+          ### :keyboard: Activity: Apply the suggestion
+          1. Click **Commit suggestion**
+          2. Enter a commit message
+          3. Click **Commit changes**
 
 
   #12 - User resolves the bug, then approves the pull request and it is merged into master
