@@ -18,6 +18,20 @@ before:
     data:
       releases: '%payload.repository.html_url%/releases'
 
+# Repo artifacts:
+# 1. Issue: Welcome
+# 2. Issue: Organizing a release
+# 3. Issue: Adding a feature
+# 4. PR: [title created by learner] — adding a feature PR
+# 5. Issue: Create a release pull request
+# 6. PR: [title created by learner] — release PR
+# 7. PR: More features for next release
+# 8. PR: [title created by learner] — release drafter PR
+# 9. Issue: Finalize the release
+# 10. PR: Accidental bugs
+# 11. PR: Backport the hotfix
+# 12. Issue: Create a patch release
+
 steps:
 
   #1 - ask the user to create a beta release from the most recent commit on master
@@ -94,6 +108,7 @@ steps:
           - type: respond
             with: 05.1_wrong-base.md
             issue: '%payload.pull_request.number%'
+          # TODO: reduce possible extra PRs by allowing learner to change the base instead of closing PR
           # and we close the pull request, unmerged
           - type: closeIssue
             issue: '%payload.pull_request.number%'
@@ -161,6 +176,7 @@ steps:
           - type: closeIssue
       # If they did everything right, we create a new pull request going into the release branch.
       # Currently the change is very minor, but it should make sense with the release.
+      # TODO: remove addition of release drafter config from `green-colors` PR, this is added at a later point
       - type: createPullRequest
         title: More features for the next release
         body: 07.1_new-pr.md
@@ -191,6 +207,8 @@ steps:
     - type: respond
       with: 08.2_github-app.md
       issue: 6
+      data:
+        prUrl: '%payload.repository.html_url%/compare/release-v1.0...config-release-drafter?expand=1'
     - type: respond
       with: 08.1_back-to-release.md
       data:
@@ -199,9 +217,30 @@ steps:
   #8 - Install the GitHub app and then populate the release-drafter.yml file
   - title: GitHub app and configuration template
     description: Install the GitHub app to help with release notes, then populate the `release-drafter.yml` file
-    event: pull_request.synchronize
+    event: pull_request
     link: '{{ repoUrl }}/pull/6'
     actions:
+      # We check that the pull request has the correct "base" and "compare"
+      - type: gate
+        gates:
+        - left: '%payload.action%'
+          operator: ===
+          right: edited
+        - left: '%payload.action%'
+          operator: ===
+          right: opened
+      - type: gate
+        gates:
+          - left: '%payload.pull_request.base.ref%'
+            operator: ===
+            right: release-v1.0
+          - left: '%payload.pull_request.head.ref%'
+            operator: ===
+            right: config-release-drafter
+        every: true
+        else: 
+          - type: respond
+            with: 08.4_wrong-base.md
       - type: octokit
         method: pullRequests.getFiles
         owner: '%payload.repository.owner.login%'
@@ -216,10 +255,26 @@ steps:
           - type: respond
             with: 08.3_config-validation.md
       - type: createReview
-        body: 09.1_response.md
+        body: 08.5_merge-the-config.md
         event: APPROVE
 
-  #9 - The user approves the branch merge into master
+  #9 - Merge the release drafter configuration
+  - title: Merge the config for release drafter
+    description: Merge the configuration file for release drafter, which sets a template for the release.
+    event: pull_request.closed
+    link: '{{ repoUrl }}/pull/8'
+    actions:
+      - type: respond
+        with: 09.2_goto-release.md
+        data:
+          url: '6'
+      - type: createReview
+        body: 09.1_response.md
+        event: APPROVE
+        number: 6
+      
+
+  #10 - The user approves the branch merge into master
   - title: Merge in the release
     description: Merge the release branch into master.
     event: pull_request.closed
@@ -253,11 +308,11 @@ steps:
         data:
           url: '%actions.finalIssue.data.html_url%'
 
-  #10 - User creates a release from the draft
+  #11 - User creates a release from the draft
   - title: Finalize the release
     description: Complete the release by publishing the drafted release
     event: release.published
-    link: '{{ repoUrl }}/issues/8'
+    link: '{{ repoUrl }}/issues/9'
     actions:
     ## Create a new PR for the hotfix
       - type: createPullRequest
@@ -273,6 +328,7 @@ steps:
         number: '%actions.newPullRequest.data.number%'
         assignees: '%payload.repository.owner.login%'
       ## Suggest a change in the new PR
+      # TODO: request a review from the learner
       - type: octokit
         method: pullRequests.createComment
         owner: '%payload.repository.owner.login%'
@@ -281,13 +337,11 @@ steps:
         commit_id: '%actions.newPullRequest.data.head.sha%'
         path: game.js
         body: |
+          How's this change? 
+
           ```suggestion
               starCtx.fillStyle = "#000";
           ```
-          ### :keyboard: Activity: Apply the suggestion
-          1. Click **Commit suggestion**
-          2. Enter a commit message
-          3. Click **Commit changes**
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
       - type: respond
@@ -298,14 +352,14 @@ steps:
       - type: closeIssue
         issue: Finalize the release
 
-
-  #11 - User resolves the bug, then approves the pull request and it is merged into master
+  #12 - User resolves the bug, then approves the pull request and it is merged into master
   - title: Submit a hotfix
     description: Resolve the bug, then merge the fix into the master branch
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/9'
+    link: '{{ repoUrl }}/pull/10'
     actions:
     - type: mergePullRequest
+    # TODO: request a review from the learner
     - type: createPullRequest
       title: Backport the hotfix
       body: 13.2_backport.md
@@ -317,11 +371,11 @@ steps:
       data:
         url: '%actions.backportPR.data.html_url%'
 
-  #12 - Hotfix is reverse merged into the release branch
+  #13 - Hotfix is reverse merged into the release branch
   - title: Backport the hotfix
     description: Apply the patch commits to the release branch
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/10'
+    link: '{{ repoUrl }}/pull/11'
     actions:
     - type: mergePullRequest
     - type: createIssue
@@ -335,11 +389,11 @@ steps:
       data:
         url: '%actions.patchIssue.data.html_url%'
 
-  #13 - Backport the hotfix into existing release
+  #14 - Backport the hotfix into existing release
   - title: Release v1.0.1
     description: Create a release based on the most recent commit on the release branch
     event: release.published
-    link: '{{ repoUrl }}/issues/11'
+    link: '{{ repoUrl }}/issues/12'
     actions:
       - type: createIssue
         title: Congratulations
