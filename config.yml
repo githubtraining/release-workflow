@@ -204,10 +204,12 @@ steps:
       owner: '%payload.repository.owner.login%'
       repo: '%payload.repository.name%'
       ref: heads/green-colors
-      # TODO: change these instructions to indicate the need for a new PR with release drafter config
     - type: respond
       with: 08.2_github-app.md
       issue: 6
+      data:
+        prUrl: '%payload.repository.html_url%/compare/release-v1.0...config-release-drafter?expand=1'
+
     - type: respond
       with: 08.1_back-to-release.md
       data:
