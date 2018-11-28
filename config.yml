@@ -57,8 +57,8 @@ steps:
         issue: Welcome
 
   #2 - The user should create a project board
-  - title: Prepare for the next release
-    description: Create a project board.
+  - title: Create a project board
+    description: Prepare for the next release using GitHub Projects.
     event: project.created
     link: '{{ repoUrl }}/issues/2'
     actions:
@@ -68,7 +68,7 @@ steps:
 
 
   #3 - The user should add a card to the project board
-  - title: Sorting issues
+  - title: Triage issues in a project
     description: Add an issue to a project column.
     event: project_card.created
     link: '{{ repoUrl }}/issues/2'
@@ -92,7 +92,7 @@ steps:
 
 
   #4 - User makes a change and opens a pull request against `base: release-v1.0`
-  - title: Adding a feature
+  - title: Open a PR to add a new feature
     description: Update the README.md and open a pull request.
     event: pull_request.opened
     link: '{{ repoUrl }}/issues/3'
@@ -118,7 +118,7 @@ steps:
         event: APPROVE
 
   #5 - The user merges their pull request into the release branch
-  - title: Merge the pull request
+  - title: Merge the new feature pull request
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
     link: '{{ repoUrl }}/pull/4'
@@ -215,8 +215,8 @@ steps:
         url: '6'
 
   #8 - Install the GitHub app and then populate the release-drafter.yml file
-  - title: GitHub app and configuration template
-    description: Install the GitHub app to help with release notes, then populate the `release-drafter.yml` file
+  - title: Install and configure Release Drafter
+    description: Use a GitHub app to help with release notes.
     event: pull_request
     link: '{{ repoUrl }}/pull/6'
     actions:
@@ -275,7 +275,7 @@ steps:
       
 
   #10 - The user approves the branch merge into master
-  - title: Merge in the release
+  - title: Merge the release
     description: Merge the release branch into master.
     event: pull_request.closed
     link: '{{ repoUrl }}/pull/6'
@@ -353,8 +353,8 @@ steps:
         issue: Finalize the release
 
   #12 - User resolves the bug, then approves the pull request and it is merged into master
-  - title: Submit a hotfix
-    description: Resolve the bug, then merge the fix into the master branch
+  - title: Approve the hotfix pull request
+    description: Submit a hotfix by applying the the suggested change and approving a PR. 
     event: pull_request_review.submitted
     link: '{{ repoUrl }}/pull/10'
     actions:
@@ -372,7 +372,7 @@ steps:
         url: '%actions.backportPR.data.html_url%'
 
   #13 - Hotfix is reverse merged into the release branch
-  - title: Backport the hotfix
+  - title: Approve the backport pull request
     description: Apply the patch commits to the release branch
     event: pull_request_review.submitted
     link: '{{ repoUrl }}/pull/11'
@@ -390,7 +390,7 @@ steps:
         url: '%actions.patchIssue.data.html_url%'
 
   #14 - Backport the hotfix into existing release
-  - title: Release v1.0.1
+  - title: Create release v1.0.1
     description: Create a release based on the most recent commit on the release branch
     event: release.published
     link: '{{ repoUrl }}/issues/12'
