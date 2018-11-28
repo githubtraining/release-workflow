@@ -94,24 +94,25 @@ steps:
   #4 - User makes a change and opens a pull request against `base: release-v1.0`
   - title: Open a PR to add a new feature
     description: Update the README.md and open a pull request.
-    event: pull_request.opened
+    event: pull_request
     link: '{{ repoUrl }}/issues/3'
     actions:
       # We make sure that the user's pull request has the base set to `release-v1.0`
       - type: gate
+        gates:
+        - left: '%payload.action%'
+          operator: ===
+          right: edited
+        - left: '%payload.action%'
+          operator: ===
+          right: opened
+      - type: gate
         left: '%payload.pull_request.base.ref%'
         operator: ===
-        right: 'release-v1.0'
-        # If the user opened a pull request to master instead...
-        else:
-          # we comment and tell them that they should try again
+        right: release-v1.0
+        else: 
           - type: respond
             with: 04.1_wrong-base.md
-            issue: '%payload.pull_request.number%'
-          # TODO: reduce possible extra PRs by allowing learner to change the base instead of closing PR
-          # and we close the pull request, unmerged
-          - type: closeIssue
-            issue: '%payload.pull_request.number%'
       # We approve their pull request
       - type: createReview
         body: 04.2_approval.md
