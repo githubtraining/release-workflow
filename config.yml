@@ -156,10 +156,18 @@ steps:
   #6 - The user opens a pull request from the release branch into master
   - title: Open a release pull request
     description: Create the release pull request with base as master, and compare as the release branch.
-    event: pull_request.opened
+    event: pull_request
     link: '{{ repoUrl }}/issues/5'
     actions:
       # We check that the pull request has the correct "base" and "compare"
+      - type: gate
+        gates:
+        - left: '%payload.action%'
+          operator: ===
+          right: edited
+        - left: '%payload.action%'
+          operator: ===
+          right: opened
       - type: gate
         gates:
           - left: '%payload.pull_request.base.ref%'
@@ -168,13 +176,10 @@ steps:
           - left: '%payload.pull_request.head.ref%'
             operator: ===
             right: release-v1.0
-        # If they do not have the correct base and compare fields...
-        else:
-          # We comment and tell them that the base and compare are wrong, and to try again
+        every: true
+        else: 
           - type: respond
             with: 06.1_wrong-base.md
-          # We close the pull request
-          - type: closeIssue
       # If they did everything right, we create a new pull request going into the release branch.
       # Currently the change is very minor, but it should make sense with the release.
       # TODO: remove addition of release drafter config from `green-colors` PR, this is added at a later point
