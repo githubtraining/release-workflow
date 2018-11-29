@@ -221,11 +221,11 @@ steps:
       ref: heads/green-colors
     - type: respond
       with: 07.1_github-app.md
-      issue: Release v1.0
+      issue: 'Release v1.0'
       data:
         prUrl: '%payload.repository.html_url%/compare/release-v1.0...config-release-drafter?expand=1'
     - type: getPullRequest
-      pullRequest: Release v1.0
+      pullRequest: 'Release v1.0'
       action_id: releasePr
     - type: respond
       with: 07.2_back-to-release.md
@@ -283,7 +283,7 @@ steps:
     link: '{{ repoUrl }}/pull/8'
     actions:
       - type: getPullRequest
-        pullRequest: Release v1.0
+        pullRequest: 'Release v1.0'
         action_id: releasePr
       - type: respond
         with: 09.1_goto-release.md
