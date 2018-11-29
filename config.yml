@@ -230,7 +230,7 @@ steps:
     - type: respond
       with: 07.2_back-to-release.md
       data:
-        url: '%actions.releasePr.data.number%'
+        url: '%actions.releasePr.data.html_url%'
 
   #8 - Install the GitHub app and then populate the release-drafter.yml file
   - title: Install and configure Release Drafter
@@ -288,7 +288,7 @@ steps:
       - type: respond
         with: 09.1_goto-release.md
         data:
-          url: '%actions.releasePr.data.number%'
+          url: '%actions.releasePr.data.html_url%'
       - type: createReview
         body: 09.2_response.md
         event: APPROVE
