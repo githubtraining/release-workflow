@@ -292,7 +292,7 @@ steps:
       - type: createReview
         body: 09.2_response.md
         event: APPROVE
-        pullRequest: Releave v1.0
+        pullRequest: Release v1.0
       
 
   #10 - The user approves the branch merge into master
