@@ -144,6 +144,8 @@ steps:
         title: Create a release pull request
         body: 05.2_release-pr.md
         action_id: releaseIssue
+        data:
+          prUrl: '%payload.repository.html_url%/compare/master...release-v1.0?expand=1'
       # We comment in the merged pull request, and point them to the new issue with instructions
       - type: respond
         with: 05.3_response.md
@@ -180,6 +182,13 @@ steps:
         else: 
           - type: respond
             with: 06.1_wrong-base.md
+      - type: gate
+        left: '%payload.pull_request.title%'
+        operator: ===
+        right: Release v1.0
+        else:
+          - type: respond
+            with: 06.4_change-title.md
       # If they did everything right, we create a new pull request going into the release branch.
       # Currently the change is very minor, but it should make sense with the release.
       # TODO: remove addition of release drafter config from `green-colors` PR, this is added at a later point
