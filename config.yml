@@ -24,7 +24,7 @@ before:
 # 3. Issue: Adding a feature
 # 4. PR: [title created by learner] — adding a feature PR
 # 5. Issue: Create a release pull request
-# 6. PR: [title created by learner] — release PR
+# 6. PR: Release v1.0
 # 7. PR: More features for next release
 # 8. PR: [title created by learner] — release drafter PR
 # 9. Issue: Finalize the release
@@ -94,24 +94,25 @@ steps:
   #4 - User makes a change and opens a pull request against `base: release-v1.0`
   - title: Open a PR to add a new feature
     description: Update the README.md and open a pull request.
-    event: pull_request.opened
+    event: pull_request
     link: '{{ repoUrl }}/issues/3'
     actions:
       # We make sure that the user's pull request has the base set to `release-v1.0`
       - type: gate
+        gates:
+        - left: '%payload.action%'
+          operator: ===
+          right: edited
+        - left: '%payload.action%'
+          operator: ===
+          right: opened
+      - type: gate
         left: '%payload.pull_request.base.ref%'
         operator: ===
-        right: 'release-v1.0'
-        # If the user opened a pull request to master instead...
-        else:
-          # we comment and tell them that they should try again
+        right: release-v1.0
+        else: 
           - type: respond
             with: 04.1_wrong-base.md
-            issue: '%payload.pull_request.number%'
-          # TODO: reduce possible extra PRs by allowing learner to change the base instead of closing PR
-          # and we close the pull request, unmerged
-          - type: closeIssue
-            issue: '%payload.pull_request.number%'
       # We approve their pull request
       - type: createReview
         body: 04.2_approval.md
@@ -143,6 +144,8 @@ steps:
         title: Create a release pull request
         body: 05.2_release-pr.md
         action_id: releaseIssue
+        data:
+          prUrl: '%payload.repository.html_url%/compare/master...release-v1.0?expand=1'
       # We comment in the merged pull request, and point them to the new issue with instructions
       - type: respond
         with: 05.3_response.md
@@ -155,10 +158,18 @@ steps:
   #6 - The user opens a pull request from the release branch into master
   - title: Open a release pull request
     description: Create the release pull request with base as master, and compare as the release branch.
-    event: pull_request.opened
+    event: pull_request
     link: '{{ repoUrl }}/issues/5'
     actions:
       # We check that the pull request has the correct "base" and "compare"
+      - type: gate
+        gates:
+        - left: '%payload.action%'
+          operator: ===
+          right: edited
+        - left: '%payload.action%'
+          operator: ===
+          right: opened
       - type: gate
         gates:
           - left: '%payload.pull_request.base.ref%'
@@ -167,13 +178,17 @@ steps:
           - left: '%payload.pull_request.head.ref%'
             operator: ===
             right: release-v1.0
-        # If they do not have the correct base and compare fields...
-        else:
-          # We comment and tell them that the base and compare are wrong, and to try again
+        every: true
+        else: 
           - type: respond
             with: 06.1_wrong-base.md
-          # We close the pull request
-          - type: closeIssue
+      - type: gate
+        left: '%payload.pull_request.title%'
+        operator: ===
+        right: Release v1.0
+        else:
+          - type: respond
+            with: 06.4_change-title.md
       # If they did everything right, we create a new pull request going into the release branch.
       # Currently the change is very minor, but it should make sense with the release.
       # TODO: remove addition of release drafter config from `green-colors` PR, this is added at a later point
@@ -204,15 +219,18 @@ steps:
       owner: '%payload.repository.owner.login%'
       repo: '%payload.repository.name%'
       ref: heads/green-colors
+    - type: getPullRequest
+      pullRequest: Release v1.0
+      action_id: releasePr
     - type: respond
       with: 07.1_github-app.md
-      issue: 6
+      issue: '%actions.releasePr.data.number%'
       data:
         prUrl: '%payload.repository.html_url%/compare/release-v1.0...config-release-drafter?expand=1'
     - type: respond
       with: 07.2_back-to-release.md
       data:
-        url: '6'
+        url: '%actions.releasePr.data.html_url%'
 
   #8 - Install the GitHub app and then populate the release-drafter.yml file
   - title: Install and configure Release Drafter
@@ -264,14 +282,17 @@ steps:
     event: pull_request.closed
     link: '{{ repoUrl }}/pull/8'
     actions:
+      - type: getPullRequest
+        pullRequest: Release v1.0
+        action_id: releasePr
       - type: respond
         with: 09.1_goto-release.md
         data:
-          url: '6'
+          url: '%actions.releasePr.data.html_url%'
       - type: createReview
         body: 09.2_response.md
         event: APPROVE
-        number: 6
+        pullRequest: Release v1.0
       
 
   #10 - The user approves the branch merge into master
