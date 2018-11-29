@@ -349,7 +349,6 @@ steps:
         number: '%actions.newPullRequest.data.number%'
         assignees: '%payload.repository.owner.login%'
       ## Suggest a change in the new PR
-      # TODO: request a review from the learner
       - type: octokit
         method: pullRequests.createComment
         owner: '%payload.repository.owner.login%'
@@ -365,6 +364,8 @@ steps:
           ```
           For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
         position: 5
+      - type: requestReviewFromRegistrant
+        pullRequest: Accidental bugs
       - type: respond
         with: 11.2_next-bug.md
         issue: Finalize the release
@@ -380,7 +381,6 @@ steps:
     link: '{{ repoUrl }}/pull/10'
     actions:
     - type: mergePullRequest
-    # TODO: request a review from the learner
     - type: createPullRequest
       title: Backport the hotfix
       body: 12.1_backport.md
@@ -391,6 +391,8 @@ steps:
       with: 12.2_fix-merged.md
       data:
         url: '%actions.backportPR.data.html_url%'
+    - type: requestReviewFromRegistrant
+      pullRequest: Backport the hotfix
 
   #13 - Hotfix is reverse merged into the release branch
   - title: Approve the backport pull request
