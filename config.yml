@@ -92,7 +92,7 @@ steps:
 
 
   #4 - User makes a change and opens a pull request against `base: release-v1.0`
-  - title: Open a PR to add a new feature
+  - title: Add a new feature on the release branch
     description: Update the README.md and open a pull request.
     event: pull_request
     link: '{{ repoUrl }}/issues/3'
@@ -119,7 +119,7 @@ steps:
         event: APPROVE
 
   #5 - The user merges their pull request into the release branch
-  - title: Merge the new feature pull request
+  - title: Merge the new feature to the release branch
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
     link: '{{ repoUrl }}/pull/4'
@@ -157,7 +157,7 @@ steps:
 
   #6 - The user opens a pull request from the release branch into master
   - title: Open a release pull request
-    description: Create the release pull request with base as master, and compare as the release branch.
+    description: Create a pull request to bring the new feature into master.
     event: pull_request
     link: '{{ repoUrl }}/issues/5'
     actions:
@@ -208,8 +208,8 @@ steps:
         pullRequest: More features for the next release
 
   #7 - Bot creates a PR against release, learner approves
-  - title: Approve ships for an upcoming release
-    description: Approve ships for an upcoming release
+  - title: Approve changes for the next release
+    description: Approve pull request changes for an upcoming release.
     event: pull_request_review.submitted
     link: '{{ repoUrl }}/pull/7'
     actions:
@@ -233,8 +233,8 @@ steps:
         url: '%actions.releasePr.data.html_url%'
 
   #8 - Install the GitHub app and then populate the release-drafter.yml file
-  - title: Install and configure Release Drafter
-    description: Use a GitHub app to help with release notes.
+  - title: Install and configure a GitHub app
+    description: Use the Release Drafter GitHub app to help with release notes.
     event: pull_request
     link: '{{ repoUrl }}/pull/6'
     actions:
@@ -277,8 +277,8 @@ steps:
         event: APPROVE
 
   #9 - Merge the release drafter configuration
-  - title: Merge the config for release drafter
-    description: Merge the configuration file for release drafter, which sets a template for the release.
+  - title: Merge the config for Release Drafter
+    description: Merge the configuration file for Release Drafter to set a template for the release.
     event: pull_request.closed
     link: '{{ repoUrl }}/pull/8'
     actions:
@@ -296,7 +296,7 @@ steps:
       
 
   #10 - The user approves the branch merge into master
-  - title: Merge the release
+  - title: Merge the release branch
     description: Merge the release branch into master.
     event: pull_request.closed
     link: '{{ repoUrl }}/pull/6'
@@ -331,7 +331,7 @@ steps:
 
   #11 - User creates a release from the draft
   - title: Finalize the release
-    description: Complete the release by publishing the drafted release
+    description: Complete the release by publishing the drafted release.
     event: release.published
     link: '{{ repoUrl }}/issues/9'
     actions:
@@ -375,8 +375,8 @@ steps:
         issue: Finalize the release
 
   #12 - User resolves the bug, then approves the pull request and it is merged into master
-  - title: Approve the hotfix pull request
-    description: Submit a hotfix by applying the the suggested change and approving a PR. 
+  - title: Approve a hotfix pull request
+    description: Submit a hotfix to a previous release. 
     event: pull_request_review.submitted
     link: '{{ repoUrl }}/pull/10'
     actions:
@@ -396,7 +396,7 @@ steps:
 
   #13 - Hotfix is reverse merged into the release branch
   - title: Approve the backport pull request
-    description: Apply the patch commits to the release branch
+    description: Backport the patch commits to the release branch.
     event: pull_request_review.submitted
     link: '{{ repoUrl }}/pull/11'
     actions:
@@ -414,7 +414,7 @@ steps:
 
   #14 - Backport the hotfix into existing release
   - title: Create release v1.0.1
-    description: Create a release based on the most recent commit on the release branch
+    description: Create a patch release based on the most recent commit on the release branch.
     event: release.published
     link: '{{ repoUrl }}/issues/12'
     actions:
