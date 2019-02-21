@@ -9,3 +9,10 @@ After completing this course, you'll be able to:
 - create a Git tag and a release on GitHub
 - resolve bugs after a release
 - automate and better document your release changes
+
+Some of the GitHub features covered in this course include:
+- [Pre-Releases and Releases](https://help.github.com/en/articles/about-releases)
+- [Projects](https://help.github.com/en/articles/about-project-boards)
+- [Protected branches](https://help.github.com/en/articles/about-protected-branches)
+- [GitHub Apps](https://help.github.com/en/articles/about-integrations)
+- [Pull request reviews](https://help.github.com/en/articles/about-pull-request-reviews)
