@@ -45,6 +45,8 @@ steps:
         title: Organizing a release
         body: 01.1_project-board.md
         action_id: trackingIssue
+        data:
+          projects: '%payload.repository.html_url%/projects'
       # responding in the first welcome issue, pointing the user to the next issue just created
       - type: respond
         issue: Welcome
