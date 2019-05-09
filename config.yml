@@ -11,6 +11,8 @@ before:
   - type: updateBranchProtection
   - type: updateBranchProtection
     branch: release-v1.0
+  - type: updateBranchProtection
+    branch: bug-fix
   # creating a welcome issue that will have the user's first instructions
   - type: createIssue
     title: Welcome
