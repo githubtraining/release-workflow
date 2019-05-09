@@ -80,8 +80,6 @@ steps:
         title: Adding a feature
         body: 03.1_update-readme.md
         action_id: addFeature
-        data:
-          username: "%user.username%"
       - type: respond
         with: 03.2_automation.md
         issue: Organizing a release
