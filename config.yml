@@ -20,20 +20,6 @@ before:
     data:
       releases: "%payload.repository.html_url%/releases"
 
-# Repo artifacts:
-# 1. Issue: Welcome
-# 2. Issue: Organizing a release
-# 3. Issue: Adding a feature
-# 4. PR: [title created by learner] — adding a feature PR
-# 5. Issue: Create a release pull request
-# 6. PR: Release v1.0
-# 7. PR: More features for next release
-# 8. PR: [title created by learner] — release drafter PR
-# 9. Issue: Finalize the release
-# 10. PR: Accidental bugs
-# 11. PR: Backport the hotfix
-# 12. Issue: Create a patch release
-
 steps:
   #1 - ask the user to create a beta release from the most recent commit on master
   - title: Create a beta release
