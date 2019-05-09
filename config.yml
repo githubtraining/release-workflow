@@ -78,12 +78,18 @@ steps:
       # check if the project card is an issue (if not, it's one of the automated cards)
       - type: gate
         left: '%payload.project_card.content_url%'
+      - type: octokit
+        method: repos.getPages
+        owner: '%payload.repository.owner.login%'
+        repo: '%payload.repository.name%'
+        action_id: pagesUrl
       - type: createIssue
         title: Adding a feature
         body: 03.1_update-readme.md
         action_id: addFeature
         data:
           username: '%user.username%'
+          pagesUrl: '%actions.pagesUrl.data.html_url%'
       - type: respond
         with: 03.2_automation.md
         issue: Organizing a release
