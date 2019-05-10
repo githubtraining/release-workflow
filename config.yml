@@ -4,8 +4,8 @@ description: This course focuses on releases, and more complex branching strateg
 tags:
   - GitHub
 template:
-    name: release-based-workflow
-    repo: AlienInvasion
+  name: release-based-workflow
+  repo: AlienInvasion
 before:
   # enable branch protection
   - type: updateBranchProtection
@@ -16,42 +16,29 @@ before:
     title: Welcome
     body: 00.1_welcome.md
     data:
-      releases: '%payload.repository.html_url%/releases'
-
-# Repo artifacts:
-# 1. Issue: Welcome
-# 2. Issue: Organizing a release
-# 3. Issue: Adding a feature
-# 4. PR: [title created by learner] — adding a feature PR
-# 5. Issue: Create a release pull request
-# 6. PR: Release v1.0
-# 7. PR: More features for next release
-# 8. PR: [title created by learner] — release drafter PR
-# 9. Issue: Finalize the release
-# 10. PR: Accidental bugs
-# 11. PR: Backport the hotfix
-# 12. Issue: Create a patch release
+      releases: "%payload.repository.html_url%/releases"
 
 steps:
-
   #1 - ask the user to create a beta release from the most recent commit on master
   - title: Create a beta release
     description: Create a beta release, or a pre-release, from the existing codebase.
     event: release.published
-    link: '{{ repoUrl }}/issues/1'
+    link: "{{ repoUrl }}/issues/1"
     actions:
       # creates an issue with the next instructions about project boards
       - type: createIssue
         title: Organizing a release
         body: 01.1_project-board.md
         action_id: trackingIssue
+        data:
+          projects: "%payload.repository.html_url%/projects"
       # responding in the first welcome issue, pointing the user to the next issue just created
       - type: respond
         issue: Welcome
         with: 01.2_next-step.md
         data:
-          url: '%actions.trackingIssue.data.html_url%'
-          releases: '{{ repoUrl }}/releases'
+          url: "%actions.trackingIssue.data.html_url%"
+          releases: "{{ repoUrl }}/releases"
       # closes the welcome issue
       - type: closeIssue
         issue: Welcome
@@ -60,59 +47,56 @@ steps:
   - title: Create a project board
     description: Prepare for the next release using GitHub Projects.
     event: project.created
-    link: '{{ repoUrl }}/issues/2'
+    link: "{{ repoUrl }}/issues/2"
     actions:
-    - type: respond
-      issue: Organizing a release
-      with: 02.1_move-a-card.md
-      data:
-        projects: '%payload.repository.html_url%/projects'
+      - type: respond
+        issue: Organizing a release
+        with: 02.1_move-a-card.md
+        data:
+          projects: '%payload.repository.html_url%/projects'
 
 
   #3 - The user should add a card to the project board
   - title: Triage issues in a project
     description: Add an issue to a project column.
     event: project_card.created
-    link: '{{ repoUrl }}/issues/2'
+    link: "{{ repoUrl }}/issues/2"
     actions:
       # check if the project card is an issue (if not, it's one of the automated cards)
       - type: gate
-        left: '%payload.project_card.content_url%'
+        left: "%payload.project_card.content_url%"
       - type: createIssue
         title: Adding a feature
         body: 03.1_update-readme.md
         action_id: addFeature
-        data:
-          username: '%user.username%'
       - type: respond
         with: 03.2_automation.md
         issue: Organizing a release
         data:
-          url: '%actions.addFeature.data.html_url%'
+          url: "%actions.addFeature.data.html_url%"
       - type: closeIssue
         issue: Organizing a release
-
 
   #4 - User makes a change and opens a pull request against `base: release-v1.0`
   - title: Add a new feature on the release branch
     description: Update the README.md and open a pull request.
     event: pull_request
-    link: '{{ repoUrl }}/issues/3'
+    link: "{{ repoUrl }}/issues/3"
     actions:
       # We make sure that the user's pull request has the base set to `release-v1.0`
       - type: gate
         gates:
-        - left: '%payload.action%'
-          operator: ===
-          right: edited
-        - left: '%payload.action%'
-          operator: ===
-          right: opened
+          - left: "%payload.action%"
+            operator: ===
+            right: edited
+          - left: "%payload.action%"
+            operator: ===
+            right: opened
       - type: gate
-        left: '%payload.pull_request.base.ref%'
+        left: "%payload.pull_request.base.ref%"
         operator: ===
         right: release-v1.0
-        else: 
+        else:
           - type: respond
             with: 04.1_wrong-base.md
       # We approve their pull request
@@ -124,20 +108,20 @@ steps:
   - title: Merge the new feature to the release branch
     description: Merge the pull request to update the release branch.
     event: pull_request.closed
-    link: '{{ repoUrl }}/pull/4'
+    link: "{{ repoUrl }}/pull/4"
     actions:
       # Because the event is the same for both, we make sure that the pull request is merged, and not just closed.
       - type: gate
-        left: '%payload.pull_request.merged%'
+        left: "%payload.pull_request.merged%"
         # If the pull request was closed with unmerged commits...
         else:
           # We reopen the pull request
           - type: octokit
             method: issues.edit
             state: open
-            owner: '%payload.repository.owner.login%'
-            repo: '%payload.repository.name%'
-            number: '%payload.repository.pull_request.number%'
+            owner: "%payload.repository.owner.login%"
+            repo: "%payload.repository.name%"
+            number: "%payload.repository.pull_request.number%"
           # We comment and let them know that they should merge
           - type: respond
             with: 05.1_early-close.md
@@ -147,12 +131,12 @@ steps:
         body: 05.2_release-pr.md
         action_id: releaseIssue
         data:
-          prUrl: '%payload.repository.html_url%/compare/master...release-v1.0?expand=1'
+          prUrl: "%payload.repository.html_url%/compare/master...release-v1.0?expand=1"
       # We comment in the merged pull request, and point them to the new issue with instructions
       - type: respond
         with: 05.3_response.md
         data:
-          url: '%actions.releaseIssue.data.html_url%'
+          url: "%actions.releaseIssue.data.html_url%"
       # We re-enable branch protection on the release branch
       - type: closeIssue
         issue: Adding a feature
@@ -161,31 +145,31 @@ steps:
   - title: Open a release pull request
     description: Create a pull request to bring the new feature into master.
     event: pull_request
-    link: '{{ repoUrl }}/issues/5'
+    link: "{{ repoUrl }}/issues/5"
     actions:
       # We check that the pull request has the correct "base" and "compare"
       - type: gate
         gates:
-        - left: '%payload.action%'
-          operator: ===
-          right: edited
-        - left: '%payload.action%'
-          operator: ===
-          right: opened
+          - left: "%payload.action%"
+            operator: ===
+            right: edited
+          - left: "%payload.action%"
+            operator: ===
+            right: opened
       - type: gate
         gates:
-          - left: '%payload.pull_request.base.ref%'
+          - left: "%payload.pull_request.base.ref%"
             operator: ===
             right: master
-          - left: '%payload.pull_request.head.ref%'
+          - left: "%payload.pull_request.head.ref%"
             operator: ===
             right: release-v1.0
         every: true
-        else: 
+        else:
           - type: respond
             with: 06.1_wrong-base.md
       - type: gate
-        left: '%payload.pull_request.title%'
+        left: "%payload.pull_request.title%"
         operator: ===
         right: Release v1.0
         else:
@@ -203,7 +187,7 @@ steps:
       - type: respond
         with: 06.3_successful-open.md
         data:
-          url: '%actions.morefeaturesPR.data.html_url%'
+          url: "%actions.morefeaturesPR.data.html_url%"
       - type: closeIssue
         issue: Create a release pull request
       - type: requestReviewFromRegistrant
@@ -213,64 +197,64 @@ steps:
   - title: Approve changes for the next release
     description: Approve pull request changes for an upcoming release.
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/7'
+    link: "{{ repoUrl }}/pull/7"
     actions:
-    - type: mergePullRequest
-    - type: octokit
-      method: gitdata.deleteReference
-      owner: '%payload.repository.owner.login%'
-      repo: '%payload.repository.name%'
-      ref: heads/green-colors
-    - type: getPullRequest
-      pullRequest: Release v1.0
-      action_id: releasePr
-    - type: respond
-      with: 07.1_github-app.md
-      issue: '%actions.releasePr.data.number%'
-      data:
-        prUrl: '%payload.repository.html_url%/compare/release-v1.0...config-release-drafter?expand=1'
-    - type: respond
-      with: 07.2_back-to-release.md
-      data:
-        url: '%actions.releasePr.data.html_url%'
+      - type: mergePullRequest
+      - type: octokit
+        method: gitdata.deleteReference
+        owner: "%payload.repository.owner.login%"
+        repo: "%payload.repository.name%"
+        ref: heads/green-colors
+      - type: getPullRequest
+        pullRequest: Release v1.0
+        action_id: releasePr
+      - type: respond
+        with: 07.1_github-app.md
+        issue: "%actions.releasePr.data.number%"
+        data:
+          prUrl: "%payload.repository.html_url%/compare/release-v1.0...config-release-drafter?expand=1"
+      - type: respond
+        with: 07.2_back-to-release.md
+        data:
+          url: "%actions.releasePr.data.html_url%"
 
   #8 - Install the GitHub app and then populate the release-drafter.yml file
   - title: Install and configure a GitHub app
     description: Use the Release Drafter GitHub app to help with release notes.
     event: pull_request
-    link: '{{ repoUrl }}/pull/6'
+    link: "{{ repoUrl }}/pull/6"
     actions:
       # We check that the pull request has the correct "base" and "compare"
       - type: gate
         gates:
-        - left: '%payload.action%'
-          operator: ===
-          right: edited
-        - left: '%payload.action%'
-          operator: ===
-          right: opened
+          - left: "%payload.action%"
+            operator: ===
+            right: edited
+          - left: "%payload.action%"
+            operator: ===
+            right: opened
       - type: gate
         gates:
-          - left: '%payload.pull_request.base.ref%'
+          - left: "%payload.pull_request.base.ref%"
             operator: ===
             right: release-v1.0
-          - left: '%payload.pull_request.head.ref%'
+          - left: "%payload.pull_request.head.ref%"
             operator: ===
             right: config-release-drafter
         every: true
-        else: 
+        else:
           - type: respond
             with: 08.1_wrong-base.md
       - type: octokit
         method: pullRequests.getFiles
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
-        number: '%payload.pull_request.number%'
+        owner: "%payload.repository.owner.login%"
+        repo: "%payload.repository.name%"
+        number: "%payload.pull_request.number%"
         action_id: pr_file
       - type: gate
-        left: '%actions.pr_file.data%'
+        left: "%actions.pr_file.data%"
         operator: includes
-        right: 'filename:.github/release-drafter.yml'
+        right: "filename:.github/release-drafter.yml"
         else:
           - type: respond
             with: 08.2_config-validation.md
@@ -282,7 +266,7 @@ steps:
   - title: Merge the config for Release Drafter
     description: Merge the configuration file for Release Drafter to set a template for the release.
     event: pull_request.closed
-    link: '{{ repoUrl }}/pull/8'
+    link: "{{ repoUrl }}/pull/8"
     actions:
       - type: getPullRequest
         pullRequest: Release v1.0
@@ -290,31 +274,30 @@ steps:
       - type: respond
         with: 09.1_goto-release.md
         data:
-          url: '%actions.releasePr.data.html_url%'
+          url: "%actions.releasePr.data.html_url%"
       - type: createReview
         body: 09.2_response.md
         event: APPROVE
         pullRequest: Release v1.0
-      
 
   #10 - The user approves the branch merge into master
   - title: Merge the release branch
     description: Merge the release branch into master.
     event: pull_request.closed
-    link: '{{ repoUrl }}/pull/6'
+    link: "{{ repoUrl }}/pull/6"
     actions:
       # Because the event is the same for both, we make sure that the pull request is merged, and not just closed.
       - type: gate
-        left: '%payload.pull_request.merged%'
+        left: "%payload.pull_request.merged%"
         # If the pull request was closed with unmerged commits...
         else:
           # We reopen the pull request
           - type: octokit
             method: issues.edit
             state: open
-            owner: '%payload.repository.owner.login%'
-            repo: '%payload.repository.name%'
-            number: '%payload.repository.pull_request.number%'
+            owner: "%payload.repository.owner.login%"
+            repo: "%payload.repository.name%"
+            number: "%payload.repository.pull_request.number%"
           # We comment and let them know that they should merge
           - type: respond
             with: 10.1_early-close.md
@@ -323,21 +306,21 @@ steps:
         title: Finalize the release
         body: 10.2_finalize-release.md
         data:
-          releases: '%payload.repository.html_url%/releases'
+          releases: "%payload.repository.html_url%/releases"
         action_id: finalIssue
-     # We comment in the merged pull request, pointing users to final instructions
+      # We comment in the merged pull request, pointing users to final instructions
       - type: respond
         with: 10.3_nice-merge.md
         data:
-          url: '%actions.finalIssue.data.html_url%'
+          url: "%actions.finalIssue.data.html_url%"
 
   #11 - User creates a release from the draft
   - title: Finalize the release
     description: Complete the release by publishing the drafted release.
     event: release.published
-    link: '{{ repoUrl }}/issues/9'
+    link: "{{ repoUrl }}/issues/9"
     actions:
-    ## Create a new PR for the hotfix
+      ## Create a new PR for the hotfix
       - type: createPullRequest
         title: Accidental bugs
         body: 11.1_hotfix-intro.md
@@ -346,17 +329,17 @@ steps:
         action_id: newPullRequest
       - type: octokit
         method: issues.addAssigneesToIssue
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
-        number: '%actions.newPullRequest.data.number%'
-        assignees: '%payload.repository.owner.login%'
+        owner: "%payload.repository.owner.login%"
+        repo: "%payload.repository.name%"
+        number: "%actions.newPullRequest.data.number%"
+        assignees: "%payload.repository.owner.login%"
       ## Suggest a change in the new PR
       - type: octokit
         method: pullRequests.createComment
-        owner: '%payload.repository.owner.login%'
-        repo: '%payload.repository.name%'
-        number: '%actions.newPullRequest.data.number%'
-        commit_id: '%actions.newPullRequest.data.head.sha%'
+        owner: "%payload.repository.owner.login%"
+        repo: "%payload.repository.name%"
+        number: "%actions.newPullRequest.data.number%"
+        commit_id: "%actions.newPullRequest.data.head.sha%"
         path: game.js
         body: |
           How's this change? 
@@ -372,53 +355,53 @@ steps:
         with: 11.2_next-bug.md
         issue: Finalize the release
         data:
-          url: '%actions.newPullRequest.data.html_url%'
+          url: "%actions.newPullRequest.data.html_url%"
       - type: closeIssue
         issue: Finalize the release
 
   #12 - User resolves the bug, then approves the pull request and it is merged into master
   - title: Approve a hotfix pull request
-    description: Submit a hotfix to a previous release. 
+    description: Submit a hotfix to a previous release.
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/10'
+    link: "{{ repoUrl }}/pull/10"
     actions:
-    - type: mergePullRequest
-    - type: createPullRequest
-      title: Backport the hotfix
-      body: 12.1_backport.md
-      head: bug-fix
-      base: release-v1.0
-      action_id: backportPR
-    - type: respond
-      with: 12.2_fix-merged.md
-      data:
-        url: '%actions.backportPR.data.html_url%'
-    - type: requestReviewFromRegistrant
-      pullRequest: Backport the hotfix
+      - type: updateBranchProtection
+        branch: bug-fix
+      - type: mergePullRequest
+      - type: createPullRequest
+        title: Backport the hotfix
+        body: 12.1_backport.md
+        head: bug-fix
+        base: release-v1.0
+        action_id: backportPR
+      - type: respond
+        with: 12.2_fix-merged.md
+        data:
+          url: "%actions.backportPR.data.html_url%"
 
   #13 - Hotfix is reverse merged into the release branch
   - title: Approve the backport pull request
     description: Backport the patch commits to the release branch.
     event: pull_request_review.submitted
-    link: '{{ repoUrl }}/pull/11'
+    link: "{{ repoUrl }}/pull/11"
     actions:
-    - type: mergePullRequest
-    - type: createIssue
-      title: Create a patch release
-      body: 13.1_last-release.md
-      data:
-        releases: '%payload.repository.html_url%/releases'
-      action_id: patchIssue
-    - type: respond
-      with: 13.2_backport-shipped.md
-      data:
-        url: '%actions.patchIssue.data.html_url%'
+      - type: mergePullRequest
+      - type: createIssue
+        title: Create a patch release
+        body: 13.1_last-release.md
+        data:
+          releases: "%payload.repository.html_url%"
+        action_id: patchIssue
+      - type: respond
+        with: 13.2_backport-shipped.md
+        data:
+          url: "%actions.patchIssue.data.html_url%"
 
   #14 - Backport the hotfix into existing release
   - title: Create release v1.0.1
     description: Create a patch release based on the most recent commit on the release branch.
     event: release.published
-    link: '{{ repoUrl }}/issues/12'
+    link: "{{ repoUrl }}/issues/12"
     actions:
       - type: createIssue
         title: Congratulations
@@ -428,6 +411,6 @@ steps:
         with: 14.2_point-to-last.md
         issue: Create a patch release
         data:
-          url: '%actions.lastIssue.data.html_url%'
+          url: "%actions.lastIssue.data.html_url%"
       - type: closeIssue
         issue: Create a patch release
