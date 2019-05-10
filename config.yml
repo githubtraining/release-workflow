@@ -11,8 +11,6 @@ before:
   - type: updateBranchProtection
   - type: updateBranchProtection
     branch: release-v1.0
-  - type: updateBranchProtection
-    branch: bug-fix
   # creating a welcome issue that will have the user's first instructions
   - type: createIssue
     title: Welcome
@@ -367,6 +365,8 @@ steps:
     event: pull_request_review.submitted
     link: "{{ repoUrl }}/pull/10"
     actions:
+      - type: updateBranchProtection
+        branch: bug-fix
       - type: mergePullRequest
       - type: createPullRequest
         title: Backport the hotfix
