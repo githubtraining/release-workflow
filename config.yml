@@ -54,6 +54,9 @@ steps:
       - type: respond
         issue: Organizing a release
         with: 02.1_move-a-card.md
+        data:
+          projects: '%payload.repository.html_url%/projects'
+
 
   #3 - The user should add a card to the project board
   - title: Triage issues in a project
