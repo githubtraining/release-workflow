@@ -390,7 +390,7 @@ steps:
         title: Create a patch release
         body: 13.1_last-release.md
         data:
-          releases: "%payload.repository.html_url%/releases"
+          releases: "%payload.repository.html_url%"
         action_id: patchIssue
       - type: respond
         with: 13.2_backport-shipped.md
