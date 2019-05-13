@@ -334,20 +334,10 @@ steps:
         number: "%actions.newPullRequest.data.number%"
         assignees: "%payload.repository.owner.login%"
       ## Suggest a change in the new PR
-      - type: octokit
-        method: pullRequests.createComment
-        owner: "%payload.repository.owner.login%"
-        repo: "%payload.repository.name%"
-        number: "%actions.newPullRequest.data.number%"
-        commit_id: "%actions.newPullRequest.data.head.sha%"
-        path: game.js
-        body: |
-          How's this change? 
-
-          ```suggestion
-              starCtx.fillStyle = "#000";
-          ```
-          For more information about suggest changes, check out this [GitHub Help](https://help.github.com/articles/incorporating-feedback-in-your-pull-request) article.
+      - type: createPullRequestComment
+        body: suggested-change.md
+        file: game.js
+        pullRequest: '%actions.newPullRequest.data.number%'
         position: 5
       - type: requestReviewFromRegistrant
         pullRequest: Accidental bugs
