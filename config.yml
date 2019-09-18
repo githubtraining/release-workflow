@@ -201,7 +201,7 @@ steps:
     actions:
       - type: mergePullRequest
       - type: octokit
-        method: gitdata.deleteReference
+        method: gitdata.deleteRef
         owner: "%payload.repository.owner.login%"
         repo: "%payload.repository.name%"
         ref: heads/green-colors
