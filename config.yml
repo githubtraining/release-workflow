@@ -201,7 +201,7 @@ steps:
     actions:
       - type: mergePullRequest
       - type: octokit
-        method: gitdata.deleteReference
+        method: gitdata.deleteRef
         owner: "%payload.repository.owner.login%"
         repo: "%payload.repository.name%"
         ref: heads/green-colors
@@ -246,7 +246,7 @@ steps:
           - type: respond
             with: 08.1_wrong-base.md
       - type: octokit
-        method: pullRequests.getFiles
+        method: pullRequests.listFiles
         owner: "%payload.repository.owner.login%"
         repo: "%payload.repository.name%"
         number: "%payload.pull_request.number%"
