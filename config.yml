@@ -334,7 +334,7 @@ steps:
         body: suggested-change.md
         file: game.js
         pullRequest: '%actions.newPullRequest.data.number%'
-        position: 5
+        position: 58
       - type: requestReviewFromRegistrant
         pullRequest: Accidental bugs
       - type: respond
