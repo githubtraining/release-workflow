@@ -1,11 +1,25 @@
-When your team uses a release-based workflow, GitHub makes it easy to collaborate on your next big idea.
+<p align="center"><a href="https://lab.github.com/"><img alt="Learning Lab bot" src="https://user-images.githubusercontent.com/16547949/62085817-83232580-b22a-11e9-8693-7c54205b04e5.png"></a></p>
 
-GitHub releases allow your team to package and provide software to your users based on a specific point in the history of your project. In this course, you'll learn how to create a release-based workflow that is built on the foundations of the [GitHub flow](https://guides.github.com/introduction/flow/).
+<h1 align="center">Course: Create a release based workflow </h1>
 
-After completing this course, you'll be able to:
+This repository powers the Learning Lab course [_Create a release based workflow_](https://lab.github.com/githubtraining/create-a-release-based-workflow). 
 
-- Build a project board to manage your next release
-- Create and commit changes on a release branch
-- Create a Git tag and a release on GitHub
-- Resolve bugs after a release
-- Automate and better document your release changes
+Every Learning Lab course is made up of:
+- a [course repository](https://github.com/githubtraining/release-workflow), and
+- a [template repository](https://github.com/githubtraining/AlienInvasion)
+
+The course repository is written in YAML and Markdown. The template repository could be written in any language that supports the learning objectives.
+
+For more information on the goals of this course, check out the [`course-details.md`](course-details.md). 
+
+## Contribute
+
+See something we could improve? Check out the contributing guide in the [community contributors repository](https://github.com/githubtraining/community-contributors/blob/master/CONTRIBUTING.md) for more information on the types of contributions we :heart: and instructions.
+
+We :heart: our community and take great care to ensure it is fun, safe and rewarding. Please review our [Code of Conduct](https://github.com/githubtraining/community-contributors/blob/master/CODE_OF_CONDUCT.md) for community expectations and guidelines for reporting concerns.
+
+## License
+
+All Learning Lab course repositories are licensed under [CC-BY-4.0](../LICENSE) (c) 2019 GitHub, Inc. The template repositories associated with each course may have different licenses.
+
+When using the GitHub logos, be sure to follow the [GitHub logo guidelines](https://github.com/logos)
