@@ -23,6 +23,12 @@ After completing this course, you'll be able to:
 
 ## What you'll build
 
+![GIF showing the deployed alien invasion game, the releases page showing various releases, and the Projects tab showing a completed card](https://user-images.githubusercontent.com/16547949/75803267-2ce00d00-5d4c-11ea-97b5-f667ebc1a21d.gif)
+
+- Completed [source repository](https://github.com/githubtraining/release-based-workflow-demo/)
+- Published [releases](https://github.com/githubtraining/release-based-workflow-demo/releases) created throughout the course
+- Deployed [AlienInvasion game](https://githubtraining.github.io/release-based-workflow-demo/) which is the source code for this repository. 
+
 ## Prerequisites
 
 ## Projects used
