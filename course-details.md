@@ -4,6 +4,15 @@ GitHub releases allow your team to package and provide software to your users ba
 
 ## What you'll learn
 
+This course will answer common questions like:
+- How do I choose a branching strategy?
+- When should I use topic branches?
+- When should I use release branches?
+- How do I use the Projects tab on my repository?
+- How do I create a release-centered workflow?
+- How do I backport changes for a prior release?
+- How do I implement a hotfix? 
+
 After completing this course, you'll be able to:
 
 - Build a project board to manage your next release
