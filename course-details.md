@@ -42,3 +42,4 @@ This course makes use of the following open source projects. Consider exploring 
 - [cykod/AlianInvasion](https://github.com/cykod/AlienInvasion): Demo Game for Mobile HTML5 Game Development
 
 ## Audience
+Developers, DevOps Engineers, IT Operations, managers, teams
