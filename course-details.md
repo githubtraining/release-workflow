@@ -27,4 +27,8 @@ After completing this course, you'll be able to:
 
 ## Projects used
 
+This course makes use of the following open source projects. Consider exploring these repos and maybe even making contributions!
+
+- [cykod/AlianInvasion](https://github.com/cykod/AlienInvasion): Demo Game for Mobile HTML5 Game Development
+
 ## Audience
