@@ -31,6 +31,10 @@ After completing this course, you'll be able to:
 
 ## Prerequisites
 
+We recommend you first complete the following courses:
+- [Introduction to GitHub](https://lab.github.com/githubtraining/introduction-to-github) to learn how to use pull requests, a feature heavily utilized in this course
+- [Reviewing pull requests](https://lab.github.com/githubtraining/reviewing-pull-requests) for additional instruction on pull requests
+
 ## Projects used
 
 This course makes use of the following open source projects. Consider exploring these repos and maybe even making contributions!
