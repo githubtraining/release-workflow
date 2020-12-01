@@ -19,7 +19,7 @@ before:
       releases: "%payload.repository.html_url%/releases"
 
 steps:
-  #1 - ask the user to create a beta release from the most recent commit on master
+  #1 - ask the user to create a beta release from the most recent commit on main
   - title: Create a beta release
     description: Create a beta release, or a pre-release, from the existing codebase.
     event: release.published
@@ -125,13 +125,13 @@ steps:
           # We comment and let them know that they should merge
           - type: respond
             with: 05.1_early-close.md
-      # If the user does everything right, we create the next issue with instructions to create a pull request from the release branch into master
+      # If the user does everything right, we create the next issue with instructions to create a pull request from the release branch into main
       - type: createIssue
         title: Create a release pull request
         body: 05.2_release-pr.md
         action_id: releaseIssue
         data:
-          prUrl: "%payload.repository.html_url%/compare/master...release-v1.0?expand=1"
+          prUrl: "%payload.repository.html_url%/compare/main...release-v1.0?expand=1"
       # We comment in the merged pull request, and point them to the new issue with instructions
       - type: respond
         with: 05.3_response.md
@@ -141,9 +141,9 @@ steps:
       - type: closeIssue
         issue: Adding a feature
 
-  #6 - The user opens a pull request from the release branch into master
+  #6 - The user opens a pull request from the release branch into main
   - title: Open a release pull request
-    description: Create a pull request to bring the new feature into master.
+    description: Create a pull request to bring the new feature into main.
     event: pull_request
     link: "{{ repoUrl }}/issues/5"
     actions:
@@ -160,7 +160,7 @@ steps:
         gates:
           - left: "%payload.pull_request.base.ref%"
             operator: ===
-            right: master
+            right: main
           - left: "%payload.pull_request.head.ref%"
             operator: ===
             right: release-v1.0
@@ -280,9 +280,9 @@ steps:
         event: APPROVE
         pullRequest: Release v1.0
 
-  #10 - The user approves the branch merge into master
+  #10 - The user approves the branch merge into main
   - title: Merge the release branch
-    description: Merge the release branch into master.
+    description: Merge the release branch into main.
     event: pull_request.closed
     link: "{{ repoUrl }}/pull/6"
     actions:
@@ -325,7 +325,7 @@ steps:
         title: Accidental bugs
         body: 11.1_hotfix-intro.md
         head: bug-fix
-        base: master
+        base: main
         action_id: newPullRequest
       - type: assignRegistrant
         issue: "%actions.newPullRequest.data.number%"
@@ -345,7 +345,7 @@ steps:
       - type: closeIssue
         issue: Finalize the release
 
-  #12 - User resolves the bug, then approves the pull request and it is merged into master
+  #12 - User resolves the bug, then approves the pull request and it is merged into main
   - title: Approve a hotfix pull request
     description: Submit a hotfix to a previous release.
     event: pull_request_review.submitted
